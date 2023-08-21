@@ -9,54 +9,30 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-    foregroundColor: Colors.blueGrey,
-    minimumSize: const Size(20, 5),
-    maximumSize: const Size(5, 5),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(3)),
-    ),
-  );
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.blueGrey,
+      fixedSize: const Size(30, 50));
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
-      body: Center(
-          child: ListView(
+      body: ListView(
         children: <Widget>[
-          Container(
-              height: 20,
-              padding: const EdgeInsets.only(top: 30),
-              child: const Text(
-                "Welcome to Datagrid!",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              )),
-          Container(
-            height: 20,
+          const Text(
+            "Welcome to Datagrid!",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20),
+          ),
+          SizedBox(
+            height: 30,
+            width: 30,
             child: TextButton(
                 style: raisedButtonStyle,
                 onPressed: () {},
-                child: Text('Upload Image')),
-          ),
-          Container(
-              child: GridView.count(
-            crossAxisCount: 5,
-            children: <Widget>[
-              Container(
-                color: Colors.grey,
-                child: Text("PicLogo"),
-              ),
-              Text("PicName", style: TextStyle(backgroundColor: Colors.grey)),
-              Text("PicHeight", style: TextStyle(backgroundColor: Colors.grey)),
-              Text("PicWidth", style: TextStyle(backgroundColor: Colors.grey)),
-              Text("PicType", style: TextStyle(backgroundColor: Colors.grey))
-            ],
-          ))
+                child: const Text('Upload Image')),
+          )
         ],
-      )),
+      ),
     );
   }
 }
