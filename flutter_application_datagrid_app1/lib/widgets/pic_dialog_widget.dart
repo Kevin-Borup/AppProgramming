@@ -21,13 +21,16 @@ class PicDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget nameField;
     Text titleText;
+    Text closeText;
     bool filledName = picCon.name != "";
 
     if (filledName) {
       titleText = Text(picCon.name);
-      nameField = Text("");
+      closeText = const Text("Close");
+      nameField = const Text("");
     } else {
-      titleText = Text('Add Name');
+      titleText = const Text('Add Name');
+      closeText = const Text("Submit");
       nameField = TextFormField(
           autofocus: true,
           validator: (value) {
@@ -54,15 +57,21 @@ class PicDialog extends StatelessWidget {
             children: <Widget>[
               picCon.image,
               nameField,
-              Text(picCon.getSize()),
-              Text(picCon.type)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Size (h x w): ${picCon.getSize()}"),
+                  Text("Type: ${picCon.type}"),
+                ],
+              )
+
             ],
           ),
         ),
       ),
       actions: [
         ElevatedButton(
-            child: const Text("Submit"),
+            child: closeText,
             onPressed: () {
               if (filledName) {
                 Navigator.of(context).pop();

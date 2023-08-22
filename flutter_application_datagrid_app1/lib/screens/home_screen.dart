@@ -6,6 +6,7 @@ import 'package:flutter_application_datagrid_app1/models/models.dart';
 import 'package:flutter_application_datagrid_app1/widgets/pic_dialog_widget.dart';
 import 'package:flutter_application_datagrid_app1/widgets/pictable_widget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -26,10 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
-      Image image = Image.file(File(pickedImage.path));
-      double height = image.height ?? 0;
-      double width = image.width ?? 0;
-      String type = pickedImage.mimeType ?? "";
+      var file = File(pickedImage.path);
+      // "Image.file is not supported on Flutter Web. Consider using either Image.asset or Image.network instead."
+      final bytes = await file.readAsBytes();
+      Image image = Image.memory(bytes); // Lacks properties
+      var imgProp = await decodeImageFromList(bytes);
+      num height = imgProp.height ?? 0;
+      num width = imgProp.width ?? 0;
+      String type = (lookupMimeType(file.path ?? "") ?? "").replaceFirst('image/', "");
       PictureContainer picCon = PictureContainer(image, height, width, type);
       _showImageDialog(picCon);
     }

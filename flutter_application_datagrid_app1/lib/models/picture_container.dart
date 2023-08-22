@@ -5,8 +5,8 @@ class PictureContainer {
 
   final Image image;
   late String name = "";
-  final double height;
-  final double width;
+  final num height;
+  final num width;
   final String type;
 
   void addName(String name) {
