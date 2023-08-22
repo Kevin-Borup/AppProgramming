@@ -1,15 +1,19 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
-enum FillType { jpeg, png }
-
 class PictureContainer {
-  PictureContainer(Image? image, this.name, this.height, this.width, this.type);
+  PictureContainer(this.image, this.height, this.width, this.type);
 
-  late Image image;
-  final String name;
-  final int height;
-  final int width;
-  final FillType type;
+  final Image image;
+  late String name = "";
+  final double height;
+  final double width;
+  final String type;
+
+  void addName(String name) {
+    this.name = name;
+  }
+
+  String getSize() {
+    return ("$height x $width");
+  }
 }
