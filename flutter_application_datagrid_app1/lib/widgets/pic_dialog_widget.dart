@@ -60,11 +60,10 @@ class PicDialog extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Size (h x w): ${picCon.getSize()}"),
+                  Text("Size (h x w): ${picCon.getDimSize()}"),
                   Text("Type: ${picCon.type}"),
                 ],
               )
-
             ],
           ),
         ),

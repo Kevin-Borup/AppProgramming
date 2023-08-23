@@ -34,8 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
       var imgProp = await decodeImageFromList(bytes);
       num height = imgProp.height ?? 0;
       num width = imgProp.width ?? 0;
-      String type = (lookupMimeType(file.path ?? "") ?? "").replaceFirst('image/', "");
-      PictureContainer picCon = PictureContainer(image, height, width, type);
+      String type =
+          (lookupMimeType(file.path ?? "") ?? "").replaceFirst('image/', "");
+      PictureContainer picCon =
+          PictureContainer(image, bytes.length, height, width, type);
       _showImageDialog(picCon);
     }
   }
