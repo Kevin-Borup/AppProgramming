@@ -21,7 +21,7 @@ namespace WebApi_Datagrid.Controllers
         {
             await _imageService.CreateAsync(newImage);
 
-            return CreatedAtAction(nameof(Get), new {id = newImage.Id}, newImage);
+            return CreatedAtAction(nameof(Get), new {id = newImage._id}, newImage);
         }
     }
 }

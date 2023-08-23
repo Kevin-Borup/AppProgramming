@@ -20,7 +20,7 @@ class PicImageProvider extends ChangeNotifier {
   //     UnmodifiableListView(_picCons);
 
   UnmodifiableListView<PictureContainer> get picCons =>
-      UnmodifiableListView(imgController.GetAllPicCons());
+      UnmodifiableListView(imgController.getAllPicCons());
 
   /// Adds [item] to cart. This and [removeAll] are the only ways to modify the
   /// cart from the outside.

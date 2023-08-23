@@ -36,7 +36,7 @@ class PictureContainer {
   }
 
   factory PictureContainer.fromJson(Map<String, dynamic> json) {
-    var bytes = base64.decode(json['Image']);
+    var bytes = base64.decode(json['Image64']);
     Image image = Image.memory(bytes);
     var picCon = PictureContainer(image, bytes, json['Size'], json['Height'],
         json['Width'], json['Type']);
@@ -49,12 +49,12 @@ class PictureContainer {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-    result.addAll({'image': base64.encode(bytes)});
-    result.addAll({'name': name});
-    result.addAll({'byteSize': byteSize});
-    result.addAll({'height': height});
-    result.addAll({'width': width});
-    result.addAll({'type': type});
+    result.addAll({'Image64': base64.encode(bytes)});
+    result.addAll({'Name': name});
+    result.addAll({'Width': width});
+    result.addAll({'Height': height});
+    result.addAll({'Size': byteSize});
+    result.addAll({'Type': type});
 
     return result;
   }

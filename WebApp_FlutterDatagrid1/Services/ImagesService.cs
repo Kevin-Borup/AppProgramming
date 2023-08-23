@@ -25,15 +25,15 @@ namespace WebApp_FlutterDatagrid1.Services
             await _imagesCollection.Find(_ => true).ToListAsync();
 
         public async Task<Image?> GetAsync(string id) =>
-            await _imagesCollection.Find(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            await _imagesCollection.Find(x => x._id.Equals(id)).FirstOrDefaultAsync();
 
-        public async Task CreateAsync(Image newBook) =>
-            await _imagesCollection.InsertOneAsync(newBook);
+        public async Task CreateAsync(Image newImage) =>
+            await _imagesCollection.InsertOneAsync(newImage);
 
         public async Task UpdateAsync(string id, Image updatedImage) =>
-            await _imagesCollection.ReplaceOneAsync(x => x.Id.Equals(id), updatedImage);
+            await _imagesCollection.ReplaceOneAsync(x => x._id.Equals(id), updatedImage);
 
         public async Task RemoveAsync(string id) =>
-            await _imagesCollection.DeleteOneAsync(x => x.Id.Equals(id));
+            await _imagesCollection.DeleteOneAsync(x => x._id.Equals(id));
     }
 }

@@ -5,13 +5,12 @@ import '../models/picture_container.dart';
 class ImageDataController {
   var imageHttp = ImageDataHttp();
 
-  List<PictureContainer> GetAllPicCons() {
-    List<PictureContainer> picList = [];
+  List<PictureContainer> getAllPicCons() {
+    late List<PictureContainer> picList = [];
 
+    //THis is where it fails. PicList is always 0 at the end.
     imageHttp.getPicCons().then((value) {
-      for (var image in value) {
-        picList.add(image);
-      }
+      picList = value;
     });
     return picList;
   }
