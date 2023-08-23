@@ -25,7 +25,7 @@ class PicImageProvider extends ChangeNotifier {
   /// Adds [item] to cart. This and [removeAll] are the only ways to modify the
   /// cart from the outside.
   void add(PictureContainer picCon) {
-    imgController.PostPicCon(picCon);
+    imgController.postPicCon(picCon);
     // _picCons.add(picCon);
     // This call tells the widgets that are listening to this model to rebuild.
     notifyListeners();

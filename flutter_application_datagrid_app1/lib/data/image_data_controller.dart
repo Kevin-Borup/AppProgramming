@@ -8,13 +8,15 @@ class ImageDataController {
   List<PictureContainer> GetAllPicCons() {
     List<PictureContainer> picList = [];
 
-    imageHttp.fetchPictureContainers().then((value) {
-      if (value != null) value.forEach((image) => picList.add(image));
+    imageHttp.getPicCons().then((value) {
+      for (var image in value) {
+        picList.add(image);
+      }
     });
     return picList;
   }
 
-  void PostPicCon(PictureContainer picCon) {
+  void postPicCon(PictureContainer picCon) {
     imageHttp.postPictureContainer(picCon);
   }
 }
