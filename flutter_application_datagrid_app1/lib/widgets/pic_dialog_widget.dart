@@ -11,10 +11,18 @@ class PicDialog extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
 
-  @override
-  void dispose() {
-    // super.dispose();
-    nameController.dispose();
+  void _submitForm(BuildContext context) {
+    picCon.addName(nameController.text);
+    Provider.of<PicImageProvider>(context, listen: false).add(picCon);
+    Navigator.of(context).pop();
+  }
+
+  void _showImage(BuildContext context, PictureContainer picCon) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(content: picCon.image);
+        });
   }
 
   @override
@@ -32,6 +40,7 @@ class PicDialog extends StatelessWidget {
       titleText = const Text('Add Name');
       closeText = const Text("Submit");
       nameField = TextFormField(
+          onFieldSubmitted: (text) => _submitForm(context),
           autofocus: true,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -40,10 +49,7 @@ class PicDialog extends StatelessWidget {
             return null;
           },
           controller: nameController,
-          decoration: const InputDecoration(
-            labelText: 'Name',
-            icon: Icon(Icons.add_circle_outline),
-          ));
+          decoration: const InputDecoration(labelText: 'Name'));
     }
 
     return AlertDialog(
@@ -55,15 +61,27 @@ class PicDialog extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              picCon.image,
-              nameField,
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Size (h x w): ${picCon.getDimSize()}"),
-                  Text("Type: ${picCon.type}"),
+                  SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: InkWell(
+                        child: picCon.image,
+                        onTap: () {
+                          _showImage(context, picCon);
+                        }),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    height: 50,
+                    child: nameField,
+                  )
                 ],
-              )
+              ),
+              Text("Dimensions: ${picCon.getDimSize()}"),
+              Text("Type: ${picCon.type}"),
+              Text("Size: ${picCon.getSize()} "),
             ],
           ),
         ),
@@ -75,10 +93,7 @@ class PicDialog extends StatelessWidget {
               if (filledName) {
                 Navigator.of(context).pop();
               } else if (_formKey.currentState!.validate()) {
-                picCon.addName(nameController.text);
-                Provider.of<PicImageProvider>(context, listen: false)
-                    .add(picCon);
-                Navigator.of(context).pop();
+                _submitForm(context);
               }
             })
       ],

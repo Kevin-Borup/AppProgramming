@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       String type =
           (lookupMimeType(file.path ?? "") ?? "").replaceFirst('image/', "");
       PictureContainer picCon =
-          PictureContainer(image, bytes.length, height, width, type);
+          PictureContainer(image, bytes, bytes.length, height, width, type);
       _showImageDialog(picCon);
     }
   }

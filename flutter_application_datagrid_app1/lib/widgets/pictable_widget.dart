@@ -15,13 +15,6 @@ class PicTable extends StatelessWidget {
         });
   }
 
-  void _showImage(BuildContext context, PictureContainer picCon) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(content: picCon.image);
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,19 +34,17 @@ class PicTable extends StatelessWidget {
           )
         ],
         rows: picConProvider.picCons
-            .map((PictureContainer picCon) => DataRow(
-                    onSelectChanged: (val) => {
-                          if (val != null && val)
-                            {_showImageDialog(context, picCon)}
-                        },
-                    cells: [
-                      DataCell(InkWell(
-                          onTap: () {
-                            _showImage(context, picCon);
-                          },
-                          child: picCon.image)),
-                      DataCell(Text(picCon.name))
-                    ]))
+            .map((PictureContainer picCon) =>
+            DataRow(
+                onSelectChanged: (val) =>
+                {
+                  if (val != null && val)
+                    {_showImageDialog(context, picCon)}
+                },
+                cells: [
+                  DataCell(picCon.image),
+                  DataCell(Text(picCon.name))
+                ]))
             .toList());
   }
 }
