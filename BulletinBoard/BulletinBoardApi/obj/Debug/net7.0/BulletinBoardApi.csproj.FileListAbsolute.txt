@@ -1,0 +1,7 @@
+C:\ZBC Data-Kommunikation\H3\AppProgramming\BulletinBoard\BulletinBoardApi\obj\Debug\net7.0\BulletinBoardApi.csproj.AssemblyReference.cache
+C:\ZBC Data-Kommunikation\H3\AppProgramming\BulletinBoard\BulletinBoardApi\obj\Debug\net7.0\BulletinBoardApi.GeneratedMSBuildEditorConfig.editorconfig
+C:\ZBC Data-Kommunikation\H3\AppProgramming\BulletinBoard\BulletinBoardApi\obj\Debug\net7.0\BulletinBoardApi.AssemblyInfoInputs.cache
+C:\ZBC Data-Kommunikation\H3\AppProgramming\BulletinBoard\BulletinBoardApi\obj\Debug\net7.0\BulletinBoardApi.AssemblyInfo.cs
+C:\ZBC Data-Kommunikation\H3\AppProgramming\BulletinBoard\BulletinBoardApi\obj\Debug\net7.0\BulletinBoardApi.csproj.CoreCompileInputs.cache
+C:\ZBC Data-Kommunikation\H3\AppProgramming\BulletinBoard\BulletinBoardApi\obj\Debug\net7.0\BulletinBoardApi.MvcApplicationPartsAssemblyInfo.cs
+C:\ZBC Data-Kommunikation\H3\AppProgramming\BulletinBoard\BulletinBoardApi\obj\Debug\net7.0\BulletinBoardApi.MvcApplicationPartsAssemblyInfo.cache
