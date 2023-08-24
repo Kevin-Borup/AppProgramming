@@ -1243,19 +1243,21 @@
   },
   "packageFolders": {
     "C:\\Users\\Kevin\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\ZBC Data-Kommunikation\\H3\\AppProgramming\\WebApp_FlutterDatagrid1\\WebApp_FlutterDatagrid1.csproj",
+      "projectUniqueName": "C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\WebApp_FlutterDatagrid1\\WebApp_FlutterDatagrid1.csproj",
       "projectName": "WebApp_FlutterDatagrid1",
-      "projectPath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgramming\\WebApp_FlutterDatagrid1\\WebApp_FlutterDatagrid1.csproj",
+      "projectPath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\WebApp_FlutterDatagrid1\\WebApp_FlutterDatagrid1.csproj",
       "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
-      "outputPath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgramming\\WebApp_FlutterDatagrid1\\obj\\",
+      "outputPath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\WebApp_FlutterDatagrid1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1267,6 +1269,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

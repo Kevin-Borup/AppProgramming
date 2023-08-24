@@ -13,10 +13,10 @@ namespace WebApi_Datagrid.Controllers
         public FlutDatagridController(ImagesService imagesService) => 
             _imageService = imagesService;
 
-        [HttpGet(Name = "GetImages")]
+        [HttpGet]
         public async Task<List<Image>> Get() => await _imageService.GetAsync();
 
-        [HttpPost(Name = "PostImage")]
+        [HttpPost]
         public async Task<IActionResult> Post(Image newImage)
         {
             await _imageService.CreateAsync(newImage);

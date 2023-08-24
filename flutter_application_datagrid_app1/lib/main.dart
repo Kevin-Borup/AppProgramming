@@ -1,16 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_datagrid_app1/data/http_override.dart';
-import 'package:flutter_application_datagrid_app1/providers/pic_image_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_application_datagrid_app1/blocs/pic_cons_bloc.dart';
+import 'package:flutter_application_datagrid_app1/services/service_locator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'screens/screens.dart';
 
 void main() {
-  HttpOverrides.global = MyHttpOverrides(); // NOT PRODUCTION FRIENDLY CODE
-  runApp(ChangeNotifierProvider(
-      create: (context) => PicImageProvider(), child: const MyApp()));
+  setupApi();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,10 +15,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Datagrid App",
-      home: HomeScreen(),
+      home: BlocProvider<PicConsBloc>(
+        create: (context) => PicConsBloc(),
+        child: HomeScreen(),
+      ),
     );
   }
 }

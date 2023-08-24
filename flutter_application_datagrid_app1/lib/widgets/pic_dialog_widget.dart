@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_datagrid_app1/data/events/piccon_event.dart';
 import 'package:flutter_application_datagrid_app1/models/models.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../providers/pic_image_provider.dart';
+import '../blocs/pic_cons_bloc.dart';
 
 class PicDialog extends StatelessWidget {
   PicDialog(this.picCon, {Key? key}) : super(key: key);
@@ -10,12 +11,6 @@ class PicDialog extends StatelessWidget {
   final PictureContainer picCon;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
-
-  void _submitForm(BuildContext context) {
-    picCon.addName(nameController.text);
-    Provider.of<PicImageProvider>(context, listen: false).add(picCon);
-    Navigator.of(context).pop();
-  }
 
   void _showImage(BuildContext context, PictureContainer picCon) {
     showDialog(
@@ -40,7 +35,15 @@ class PicDialog extends StatelessWidget {
       titleText = const Text('Add Name');
       closeText = const Text("Submit");
       nameField = TextFormField(
-          onFieldSubmitted: (text) => _submitForm(context),
+          onFieldSubmitted: (text) {
+            if (_formKey.currentState!.validate()) {
+              picCon.addName(nameController.text);
+              final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
+              picBloc.add(PostPicConAndGetAllEvent(picCon));
+              picBloc.add(GetAllPicConsEvent());
+              Navigator.of(context).pop();
+            }
+          },
           autofocus: true,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -93,7 +96,11 @@ class PicDialog extends StatelessWidget {
               if (filledName) {
                 Navigator.of(context).pop();
               } else if (_formKey.currentState!.validate()) {
-                _submitForm(context);
+                picCon.addName(nameController.text);
+                final PicConsBloc picBloc =
+                    BlocProvider.of<PicConsBloc>(context);
+                picBloc.add(PostPicConAndGetAllEvent(picCon));
+                Navigator.of(context).pop();
               }
             })
       ],

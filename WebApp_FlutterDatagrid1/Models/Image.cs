@@ -13,7 +13,6 @@ namespace WebApi_Datagrid.Models
         public int Height { get; set; }
         public int Width { get; set; }
         public int Size { get; set; }
-
         public string Type { get; set; }
     }
 }
