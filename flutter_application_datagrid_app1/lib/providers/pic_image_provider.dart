@@ -7,7 +7,11 @@ import 'package:flutter_application_datagrid_app1/models/models.dart';
 class PicImageProvider extends ChangeNotifier {
   /// Internal, private state of the cart.
   final ImageDataController imgController = ImageDataController();
-  final List<PictureContainer> _picCons = [];
+  late List<PictureContainer> _picCons = [];
+
+  PicImageProvider() {
+    imgController.getAllPicCons().then((value) => _picCons = value);
+  }
 
   // PicImageProvider() {
   //   var httpImage = ImageDataHttp();
@@ -20,7 +24,7 @@ class PicImageProvider extends ChangeNotifier {
   //     UnmodifiableListView(_picCons);
 
   UnmodifiableListView<PictureContainer> get picCons =>
-      UnmodifiableListView(imgController.getAllPicCons());
+      UnmodifiableListView(_picCons);
 
   /// Adds [item] to cart. This and [removeAll] are the only ways to modify the
   /// cart from the outside.
