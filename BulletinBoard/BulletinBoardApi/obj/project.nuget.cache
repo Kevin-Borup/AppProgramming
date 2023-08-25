@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+oYmwyqHcGUzph6ElGo2EDui325hmyxDLKyP8ggcWRTxBxNDzNVCXo+YwVwY8EwSiOaOsqG/h7lcuTL726OoVg==",
+  "dgSpecHash": "bM/EwZILiqswBirlxGqGajvHsad7C4Xe+XZcNwPfuwm807kC71xE3ZfBcGz5N9UR9WLdoKgCSP1crekvRktBgw==",
   "success": true,
-  "projectFilePath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgramming\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj",
+  "projectFilePath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Kevin\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\Kevin\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",
