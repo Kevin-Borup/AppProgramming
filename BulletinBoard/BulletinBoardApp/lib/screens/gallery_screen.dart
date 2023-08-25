@@ -46,6 +46,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
       setState(() {
         _localImages = tempImages;
+        _loadingLocalImages = false;
       });
     }
   }
@@ -60,7 +61,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
+      appBar: AppBar(title: const Text('Gallery')),
+      body: Column(
         children: [
           const Text("Local Gallery"),
           _loadingLocalImages

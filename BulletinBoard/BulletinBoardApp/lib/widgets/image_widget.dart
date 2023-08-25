@@ -39,9 +39,9 @@ class _ImageWidgetState extends State<ImageWidget> {
               width: size.width,
               child: Center(
                 child: GestureDetector(
-                  onPanStart: (dragDetails) => {},
-                  onPanUpdate: (dragDetails) => {},
-                  onPanEnd: (dragDetails) => {},
+                  // onPanStart: (dragDetails) => {},
+                  // onPanUpdate: (dragDetails) => {},
+                  // onPanEnd: (dragDetails) => {},
 
                   onScaleStart: (scaleDetails) => {},
                   onScaleUpdate: (scaleDetails) => {},

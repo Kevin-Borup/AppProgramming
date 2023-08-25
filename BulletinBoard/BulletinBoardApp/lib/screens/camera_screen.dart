@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:bulletin_board_app/data/bloc/events/image_model_events.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../data/bloc/image_model_bloc.dart';
+import '../data/models/image_model.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({
@@ -50,7 +52,7 @@ class CameraScreenState extends State<CameraScreen> {
     final ImageModelBloc imageBloc = BlocProvider.of<ImageModelBloc>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Take a picture')),
+      appBar: AppBar(title: const Text('Camera')),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
@@ -66,13 +68,15 @@ class CameraScreenState extends State<CameraScreen> {
           try {
             await _initializeControllerFuture;
             final xImage = await _controller.takePicture();
-            final image = Image.file(File(xImage.path));
+            final file = File(xImage.path);
+
+            final image = Image.file(file);
             if (!mounted) return;
-            imageBloc.add(SaveImageModelEvent(
-                image)); // Use Provider pattern for this local only list.
-            Navigator.of(context).pop();
+            imageBloc.add(PostImageModelEvent(ImageModel(img: image, bytes: file.readAsBytesSync())));
           } catch (e) {
-            print(e);
+            if (kDebugMode) {
+              print(e);
+            }
           }
         },
         child: const Icon(Icons.camera_alt),

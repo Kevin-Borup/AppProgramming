@@ -25,6 +25,7 @@ class _BoardScreenState extends State<BoardScreen> {
     imageBloc.add(GetAllImageModelsEvent());
 
     return Scaffold(
+      appBar: AppBar(title: const Text('Board')),
       body: SafeArea(
         child: LimitedBox(
           maxHeight: MediaQuery.of(context).size.height,

@@ -23,5 +23,13 @@ namespace BulletinBoardApi.Controllers
 
             return CreatedAtAction(nameof(Get), new { id = newImage._id }, newImage);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(ImageDB updatedImage)
+        {
+            await _bulletinService.UpdateAsync(updatedImage._id.ToString(), updatedImage);
+
+            return Ok();
+        }
     }
 }

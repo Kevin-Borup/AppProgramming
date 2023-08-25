@@ -9,13 +9,28 @@ import '../../services/service_locator.dart';
 class ImageModelBloc extends Bloc<ImageModelEvent, ImageModelState> {
   ImageModelBloc() : super(ImageModelState(state: ImageModelStates.initial)) {
     on<PostImageModelEvent>(_onPostImageModel);
+    on<UpdateImageModelEvent>(_onUpdateImageModel);
     on<GetAllImageModelsEvent>(_getAllImageModels);
     on<PostImageModelAndGetAllEvent>(_onPostPicConAndGetAll);
   }
 
   final api = locator<IApiImages>();
 
-  void _onPostImageModel(PostImageModelEvent event, Emitter<ImageModelState> emit) async {
+  void _onPostImageModel(
+      PostImageModelEvent event, Emitter<ImageModelState> emit) async {
+    emit(ImageModelState(state: ImageModelStates.uploading));
+
+    try {
+      api.postImage(event.img);
+    } on Exception {
+      emit(ImageModelState(state: ImageModelStates.error));
+    }
+
+    emit(ImageModelState(state: ImageModelStates.complete));
+  }
+
+  void _onUpdateImageModel(
+      UpdateImageModelEvent event, Emitter<ImageModelState> emit) async {
     emit(ImageModelState(state: ImageModelStates.uploading));
 
     try {

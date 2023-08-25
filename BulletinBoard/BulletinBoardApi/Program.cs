@@ -1,4 +1,6 @@
 
+using BulletinBoardApi.Services;
+
 namespace BulletinBoardApi
 {
     public class Program
@@ -8,6 +10,14 @@ namespace BulletinBoardApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.Configure<SettingsDB>(
+            builder.Configuration.GetSection("BulletinDB"));
+
+            builder.Services.AddSingleton<BulletinService>();
+
+            builder.Services.AddControllers()
+                .AddJsonOptions(
+                    options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

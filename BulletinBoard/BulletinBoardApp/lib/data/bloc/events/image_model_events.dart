@@ -12,6 +12,14 @@ class PostImageModelEvent implements ImageModelEvent {
   PostImageModelEvent(this._img);
 }
 
+class UpdateImageModelEvent implements ImageModelEvent {
+  final ImageModel _img;
+
+  ImageModel get img => _img;
+
+  UpdateImageModelEvent(this._img);
+}
+
 class PostImageModelAndGetAllEvent implements ImageModelEvent {
   final ImageModel _img;
 
