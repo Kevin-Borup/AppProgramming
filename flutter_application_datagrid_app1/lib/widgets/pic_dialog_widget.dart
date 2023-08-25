@@ -13,19 +13,22 @@ class PicDialog extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
 
   void _showImage(BuildContext context, PictureContainer picCon) {
-    final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
-    picBloc.add(GetAllPicConsEvent());
     showDialog(
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext alertContext) {
           return AlertDialog(content: picCon.image);
         });
   }
 
+  void _submitForm(BuildContext subContext) {
+    picCon.addName(nameController.text);
+    final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(subContext);
+    picBloc.add(PostPicConAndGetAllEvent(picCon));
+    Navigator.of(subContext).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
-    picBloc.add(GetAllPicConsEvent());
     Widget nameField;
     Text titleText;
     Text closeText;
@@ -41,13 +44,7 @@ class PicDialog extends StatelessWidget {
       nameField = TextFormField(
           onFieldSubmitted: (text) {
             if (_formKey.currentState!.validate()) {
-              picCon.addName(nameController.text);
-
-              final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
-              picBloc.add(GetAllPicConsEvent());
-
-              picBloc.add(PostPicConAndGetAllEvent(picCon));
-              Navigator.of(context).pop();
+              _submitForm(context);
             }
           },
           autofocus: true,
@@ -102,13 +99,7 @@ class PicDialog extends StatelessWidget {
               if (filledName) {
                 Navigator.of(context).pop();
               } else if (_formKey.currentState!.validate()) {
-                picCon.addName(nameController.text);
-                final PicConsBloc picBloc =
-                    BlocProvider.of<PicConsBloc>(context);
-                picBloc.add(GetAllPicConsEvent());
-
-                picBloc.add(PostPicConAndGetAllEvent(picCon));
-                Navigator.of(context).pop();
+                _submitForm(context);
               }
             })
       ],

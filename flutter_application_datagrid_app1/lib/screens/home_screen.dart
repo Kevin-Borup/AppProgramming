@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 
 import '../blocs/pic_cons_bloc.dart';
-import '../data/events/piccon_event.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -48,21 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _showImageDialog(PictureContainer picCon) {
     final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
-    picBloc.add(GetAllPicConsEvent());
-    setState(() {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return PicDialog(picCon);
-          });
-    });
+    showDialog(
+        context: context,
+        builder: (picDialogContext) {
+          return BlocProvider.value(value: picBloc, child: PicDialog(picCon));
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
-    picBloc.add(GetAllPicConsEvent());
-
     return Scaffold(
       body: Center(
           child: Column(

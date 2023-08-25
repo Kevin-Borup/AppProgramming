@@ -12,11 +12,10 @@ class PicTable extends StatelessWidget {
 
   void _showImageDialog(BuildContext context, PictureContainer picCon) {
     final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
-    picBloc.add(GetAllPicConsEvent());
 
     showDialog(
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext showContext) {
           return PicDialog(picCon);
         });
   }

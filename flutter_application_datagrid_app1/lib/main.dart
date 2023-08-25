@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Datagrid App",
       home: BlocProvider<PicConsBloc>(
-        create: (context) => PicConsBloc(),
+        create: (mainContext) => PicConsBloc(),
         child: HomeScreen(),
       ),
     );
