@@ -11,9 +11,12 @@ class PicTable extends StatelessWidget {
   const PicTable({super.key});
 
   void _showImageDialog(BuildContext context, PictureContainer picCon) {
+    final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
+    picBloc.add(GetAllPicConsEvent());
+
     showDialog(
         context: context,
-        builder: (context) {
+        builder: (BuildContext context) {
           return PicDialog(picCon);
         });
   }
@@ -28,7 +31,7 @@ class PicTable extends StatelessWidget {
             body: SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: BlocBuilder<PicConsBloc, PicConState>(
-        builder: (context, PicConState state) {
+        builder: (BuildContext context, PicConState state) {
           return DataTable(
               showCheckboxColumn: false,
               columns: const <DataColumn>[

@@ -13,15 +13,19 @@ class PicDialog extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
 
   void _showImage(BuildContext context, PictureContainer picCon) {
+    final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
+    picBloc.add(GetAllPicConsEvent());
     showDialog(
         context: context,
-        builder: (context) {
+        builder: (BuildContext context) {
           return AlertDialog(content: picCon.image);
         });
   }
 
   @override
   Widget build(BuildContext context) {
+    final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
+    picBloc.add(GetAllPicConsEvent());
     Widget nameField;
     Text titleText;
     Text closeText;
@@ -38,9 +42,11 @@ class PicDialog extends StatelessWidget {
           onFieldSubmitted: (text) {
             if (_formKey.currentState!.validate()) {
               picCon.addName(nameController.text);
+
               final PicConsBloc picBloc = BlocProvider.of<PicConsBloc>(context);
-              picBloc.add(PostPicConAndGetAllEvent(picCon));
               picBloc.add(GetAllPicConsEvent());
+
+              picBloc.add(PostPicConAndGetAllEvent(picCon));
               Navigator.of(context).pop();
             }
           },
@@ -99,6 +105,8 @@ class PicDialog extends StatelessWidget {
                 picCon.addName(nameController.text);
                 final PicConsBloc picBloc =
                     BlocProvider.of<PicConsBloc>(context);
+                picBloc.add(GetAllPicConsEvent());
+
                 picBloc.add(PostPicConAndGetAllEvent(picCon));
                 Navigator.of(context).pop();
               }
