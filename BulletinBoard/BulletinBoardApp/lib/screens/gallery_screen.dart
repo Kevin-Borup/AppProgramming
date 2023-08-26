@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bulletin_board_app/data/bloc/image_model_bloc.dart';
-import 'package:bulletin_board_app/data/bloc/states/image_model_states.dart';
-import 'package:bulletin_board_app/widgets/gallery_widgets.dart';
+import 'package:bulletin_board_app/data/bloc/image_bloc.dart';
+import 'package:bulletin_board_app/widgets/gallery_local_widgets.dart';
+import 'package:bulletin_board_app/widgets/gallery_remote_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-import '../data/models/image_model.dart';
+import '../data/bloc/states/image_states.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({super.key});
@@ -20,71 +19,100 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
-  late List<Image> _localImages;
-  late bool _loadingLocalImages = true;
-  late bool _loadingRemoteImages = true;
-
-  Future<void> _getLocalImages() async {
-    // AssetPathEntity is an abstraction of albums and folders
-    List<AssetPathEntity> assetFolders = [];
-    assetFolders = await PhotoManager.getAssetPathList(
-        onlyAll: true, type: RequestType.image);
-
-    int assetCount = await assetFolders[0].assetCountAsync;
-
-    if (assetCount > 0) {
-      // AssetEntity is an abstraction of pictures, videos and audio. (Requested to Image previously).
-      List<AssetEntity> assetImages =
-      await assetFolders[0].getAssetListRange(start: 0, end: assetCount);
-
-      List<Image> tempImages = [];
-      for (var asset in assetImages) {
-        File? tempFile = await asset.file;
-        if (tempFile == null) continue;
-        tempImages.add(Image.file(tempFile));
-      }
-
-      setState(() {
-        _localImages = tempImages;
-        _loadingLocalImages = false;
-      });
-    }
-  }
+  Orientation? _currentOrientation;
 
   @override
-  void initState() {
-    super.initState();
-    _getLocalImages();
+  void didChangeMetrics() {
+    _currentOrientation = MediaQuery.of(context).orientation;
+    if (kDebugMode) {
+      print('Before Orientation Change: $_currentOrientation');
+    }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        _currentOrientation = MediaQuery.of(context).orientation;
+      });
+      if (kDebugMode) {
+        print('After Orientation Change: $_currentOrientation');
+      }
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
+    _currentOrientation = MediaQuery.of(context).orientation;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Gallery')),
-      body: Column(
-        children: [
-          const Text("Local Gallery"),
-          _loadingLocalImages
-              ? const CircularProgressIndicator()
-              : GalleryWidget(images: _localImages),
-          const Text("Remote Gallery"),
-          BlocListener<ImageModelBloc, ImageModelState>(
-            listener: (blocContext, ImageModelState state) {
-              //Remains in loading until the state emits complete.
-              _loadingRemoteImages =
-              (state.currentState == ImageModelStates.complete);
-            },
-            child: _loadingRemoteImages ? const CircularProgressIndicator()
-                : BlocBuilder<ImageModelBloc, ImageModelState>(
-                builder: (blocContext, ImageModelState state) {
-                  return GalleryWidget(images: state.imgs
-                      .map((ImageModel image) => image.img)
-                      .toList());
-                }
-            ),
-          )
-        ],
+      body: Center(
+        child: _currentOrientation == Orientation.portrait
+            ? //Portrait MODE
+            const Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        Icon(Icons.save),
+                        Text("  Local Gallery"),
+                      ],
+                    ),
+                  ),
+                  Expanded(flex: 6, child: GalleryLocalWidget()),
+                  Divider(
+                    color: Colors.grey,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        Icon(Icons.cloud_done),
+                        Text("  Remote Gallery"),
+                      ],
+                    ),
+                  ),
+                  Expanded(flex: 6, child: GalleryRemoteWidget()),
+                ],
+              )
+            : //Landscape MODE
+            const Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              children: [
+                                Icon(Icons.save),
+                                Text("  Local Gallery"),
+                              ],
+                            ),
+                          ),
+                          Expanded(flex: 6, child: GalleryLocalWidget())
+                        ],
+                      )),
+                  Divider(
+                    color: Colors.grey,
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              children: [
+                                Icon(Icons.cloud_done),
+                                Text("  Remote Gallery"),
+                              ],
+                            ),
+                          ),
+                          Expanded(flex: 6, child: GalleryRemoteWidget())
+                        ],
+                      ))
+                ],
+              ),
       ),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ImageWidget extends StatefulWidget {
-  const ImageWidget ({super.key, required this.img, this.position, this.size, this.ang});
+  const ImageWidget(
+      {super.key, required this.img, this.position, this.size, this.ang});
+
   final Image img;
   final Offset? position;
   final Size? size;
@@ -28,31 +30,33 @@ class _ImageWidgetState extends State<ImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: Positioned(
+    return Scaffold(
+        body: ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Positioned(
         left: position.dx,
         top: position.dy,
-        child:  Transform.rotate(
-            angle: ang,
-            child: SizedBox(
-              height: size.height,
-              width: size.width,
-              child: Center(
-                child: GestureDetector(
-                  // onPanStart: (dragDetails) => {},
-                  // onPanUpdate: (dragDetails) => {},
-                  // onPanEnd: (dragDetails) => {},
+        child: Transform.rotate(
+          angle: ang,
+          child: SizedBox(
+            height: size.height,
+            width: size.width,
+            child: Center(
+              child: GestureDetector(
+                // onPanStart: (dragDetails) => {},
+                // onPanUpdate: (dragDetails) => {},
+                // onPanEnd: (dragDetails) => {},
 
-                  onScaleStart: (scaleDetails) => {},
-                  onScaleUpdate: (scaleDetails) => {},
-                  onScaleEnd: (scaleDetails) => {},
+                onScaleStart: (scaleDetails) => {},
+                onScaleUpdate: (scaleDetails) => {},
+                onScaleEnd: (scaleDetails) => {},
 
-                  child: img,
+                child: img,
               ),
             ),
           ),
         ),
       ),
-    );
+    ));
   }
 }

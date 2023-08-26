@@ -1,8 +1,5 @@
 import 'dart:convert';
-import 'dart:math';
 import 'dart:typed_data';
-import 'dart:io' as Io;
-import 'dart:ui';
 import 'package:bulletin_board_app/widgets/image_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +16,7 @@ class ImageModel {
   final Image img;
   final Uint8List bytes;
   late Offset position;
-  late Size size = Size(40, 40);
+  late Size size = const Size(40, 40);
   late double ang = 0;
 
   void updatePositionOffset(Offset p) => position = p;
@@ -35,12 +32,6 @@ class ImageModel {
   ImageWidget toImageWidget() {
     return ImageWidget(img: img, position: position, size: size, ang: ang);
   }
-
-  // factory ImageModel.fromImage(Image imgW){
-  //     imgw.
-  //
-  //
-  // }
 
   factory ImageModel.fromJson(Map<String, dynamic> json) {
     // internal function to help parsing to double.
@@ -61,41 +52,8 @@ class ImageModel {
       return newValue;
     }
 
-    // var id = json['_id'];
     var byte = base64.decode(json['Image64'] as String);
     var image = Image.memory(byte);
-
-    // var x = json['X'];
-
-    // var pos = Offset(double.parse(json['X']), double.parse(json['Y']));
-    // var s = Size(double.parse(json['Width']), double.parse(json['Height']));
-    // var a = double.parse(json['Angle']);
-
-    // var pos = Offset(json['X'], json['Y']);
-    // var s = Size(json['Width'], json['Height']);
-    // var a = json['Angle'];
-    //
-    // String testId = json['_id'].toString();
-    //
-    // double tempX = tryParseToDouble(json['X']);
-    // double tempY = tryParseToDouble(json['Y']);
-    //
-    // double tempW = tryParseToDouble(json['Width']);
-    // double tempH = tryParseToDouble(json['Height']);
-    //
-    // double tempA = tryParseToDouble(json['Angle']);
-
-    // var imgMdl = ImageModel(
-    //     dbID: json['_id'].toString(),
-    //     img: image,
-    //     bytes: byte,
-    //     position: Offset(tryParseToDouble(json['X']), tryParseToDouble(json['Y'])),
-    //     size: Size(tryParseToDouble(json['Width']), tryParseToDouble(json['Height'])),
-    //     ang: tryParseToDouble(json['Angle']));
-    // imgMdl._setID(json['_id'] as ObjectId);
-    // imgMdl.updatePositionOffset(Offset(json['X'] as double, json['Y'] as double));
-    // imgMdl.updateSizeS(Size(json['Width'] as double, json['Height'] as double));
-    // imgMdl.updateAngle(json['Angle'] as double);
 
     return ImageModel(
         dbID: json['_id'].toString(),
@@ -103,7 +61,7 @@ class ImageModel {
         bytes: byte,
         position: Offset(tryParseToDouble(json['X']), tryParseToDouble(json['Y'])),
         size: Size(tryParseToDouble(json['Width']), tryParseToDouble(json['Height'])),
-        ang: tryParseToDouble(json['Angle']));;
+        ang: tryParseToDouble(json['Angle']));
   }
 
   String toJson() => json.encode(toMap());

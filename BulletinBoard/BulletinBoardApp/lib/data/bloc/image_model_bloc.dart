@@ -10,58 +10,86 @@ class ImageModelBloc extends Bloc<ImageModelEvent, ImageModelState> {
   ImageModelBloc() : super(ImageModelState(state: ImageModelStates.initial)) {
     on<PostImageModelEvent>(_onPostImageModel);
     on<UpdateImageModelEvent>(_onUpdateImageModel);
+    on<DeleteImageModelEvent>(_onDeleteImageModel);
+    on<DeleteAllImageModelsEvent>(_onDeleteAllImageModels);
     on<GetAllImageModelsEvent>(_getAllImageModels);
-    on<PostImageModelAndGetAllEvent>(_onPostPicConAndGetAll);
+    on<PostImageModelAndGetAllEvent>(_onPostImageModelAndGetAll);
   }
 
-  final api = locator<IApiImages>();
+  final _api = locator<IApiImages>();
 
-  void _onPostImageModel(
-      PostImageModelEvent event, Emitter<ImageModelState> emit) async {
-    emit(ImageModelState(state: ImageModelStates.uploading));
+    void _onPostImageModel(
+        PostImageModelEvent event, Emitter<ImageModelState> emit) async {
+      emit(ImageModelState(state: ImageModelStates.uploading));
 
-    try {
-      api.postImage(event.img);
-    } on Exception {
-      emit(ImageModelState(state: ImageModelStates.error));
+      try {
+        _api.postImageModel(event.imgMdl);
+      } on Exception {
+        emit(ImageModelState(state: ImageModelStates.error));
+      }
+
+      emit(ImageModelState(state: ImageModelStates.complete));
     }
 
-    emit(ImageModelState(state: ImageModelStates.complete));
-  }
+    void _onUpdateImageModel(
+        UpdateImageModelEvent event, Emitter<ImageModelState> emit) async {
+      emit(ImageModelState(state: ImageModelStates.uploading));
 
-  void _onUpdateImageModel(
-      UpdateImageModelEvent event, Emitter<ImageModelState> emit) async {
-    emit(ImageModelState(state: ImageModelStates.uploading));
+      try {
+        _api.updateImageModel(event.imgMdl);
+      } on Exception {
+        emit(ImageModelState(state: ImageModelStates.error));
+      }
 
-    try {
-      api.postImage(event.img);
-    } on Exception {
-      emit(ImageModelState(state: ImageModelStates.error));
+      emit(ImageModelState(state: ImageModelStates.complete));
     }
 
-    emit(ImageModelState(state: ImageModelStates.complete));
-  }
+    void _onDeleteImageModel(
+        DeleteImageModelEvent event, Emitter<ImageModelState> emit) async {
+      emit(ImageModelState(state: ImageModelStates.uploading));
 
-  void _getAllImageModels(
-      GetAllImageModelsEvent event, Emitter<ImageModelState> emit) async {
-    emit(ImageModelState(state: ImageModelStates.loading));
+      try {
+        // api.postImageModel(event.img);
+      } on Exception {
+        emit(ImageModelState(state: ImageModelStates.error));
+      }
 
-    List<ImageModel> imgs = [];
-    try {
-      imgs = await api.getAllImages();
-    } on Exception {
-      emit(ImageModelState(state: ImageModelStates.error));
+      emit(ImageModelState(state: ImageModelStates.complete));
     }
 
-    emit(ImageModelState(state: ImageModelStates.complete, imgs: imgs));
+    void _onDeleteAllImageModels(
+        DeleteAllImageModelsEvent event, Emitter<ImageModelState> emit) async {
+      emit(ImageModelState(state: ImageModelStates.uploading));
+
+      try {
+        // api.postImageModel(event.img);
+      } on Exception {
+        emit(ImageModelState(state: ImageModelStates.error));
+      }
+
+      emit(ImageModelState(state: ImageModelStates.complete));
+    }
+
+    void _getAllImageModels(
+        GetAllImageModelsEvent event, Emitter<ImageModelState> emit) async {
+      emit(ImageModelState(state: ImageModelStates.loading));
+
+      List<ImageModel> imgs = [];
+      try {
+        imgs = await _api.getAllImageModels();
+      } on Exception {
+        emit(ImageModelState(state: ImageModelStates.error));
+      }
+
+      emit(ImageModelState(state: ImageModelStates.complete, imgs: imgs));
   }
 
-  void _onPostPicConAndGetAll(
+  void _onPostImageModelAndGetAll(
       PostImageModelAndGetAllEvent event, Emitter<ImageModelState> emit) async {
     emit(ImageModelState(state: ImageModelStates.uploading));
 
     try {
-      api.postImage(event.img);
+      _api.postImageModel(event.imgMdl);
     } on Exception {
       emit(ImageModelState(state: ImageModelStates.error));
     }
@@ -70,7 +98,7 @@ class ImageModelBloc extends Bloc<ImageModelEvent, ImageModelState> {
 
     List<ImageModel> imgs = [];
     try {
-      imgs = await api.getAllImages();
+      imgs = await _api.getAllImageModels();
     } on Exception {
       emit(ImageModelState(state: ImageModelStates.error));
     }

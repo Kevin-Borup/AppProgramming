@@ -1,9 +1,18 @@
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
 import 'package:bulletin_board_app/data/models/image_model.dart';
 
 abstract class IApiImages {
-  Future<List<ImageModel>> getAllImages();
 
+  Future<List<ImageModel>> getAllImageModels();
+  void postImageModel(ImageModel imgMdl);
+  void updateImageModel(ImageModel imgMdl);
+  void deleteImageModel(ImageModel imgMdl);
+  void deleteAllImageModels();
 
-  void postImage(ImageModel picCon);
-  void updateImage(ImageModel picCon);
+  Future<List<Image>> getAllImages();
+  void postImage(Uint8List imgBytes);
+  void deleteImage(Uint8List imgBytes);
+  void deleteAllImages();
 }

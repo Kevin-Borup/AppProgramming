@@ -1,6 +1,7 @@
 ﻿using BulletinBoardApi.Models;
 using BulletinBoardApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 
 namespace BulletinBoardApi.Controllers
 {
@@ -13,21 +14,68 @@ namespace BulletinBoardApi.Controllers
         public BulletinController(BulletinService bulletinService) =>
             _bulletinService = bulletinService;
 
-        [HttpGet]
-        public async Task<List<ImageDB>> Get() => await _bulletinService.GetAsync();
+        //ImgMdl
 
-        [HttpPost]
-        public async Task<IActionResult> Post(ImageDB newImage)
+        [HttpGet("ImgMdl")]
+        public async Task<List<ImageModelDB>> GetImgMdl() => await _bulletinService.GetImgMdlsAsync();
+
+        [HttpPost("ImgMdl")]
+        public async Task<IActionResult> PostImgMdl(ImageModelDB newImgMdl)
         {
-            await _bulletinService.CreateAsync(newImage);
+            await _bulletinService.CreateImgMdlAsync(newImgMdl);
 
-            return CreatedAtAction(nameof(Get), new { id = newImage._id }, newImage);
+            return CreatedAtAction(nameof(GetImgMdl), new { id = newImgMdl._id }, newImgMdl);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(ImageDB updatedImage)
+        [HttpPut("ImgMdl")]
+        public async Task<IActionResult> UpdateImgMdl(ImageModelDB updatedImgMdl)
         {
-            await _bulletinService.UpdateAsync(updatedImage._id.ToString(), updatedImage);
+            await _bulletinService.UpdateImgMdlAsync(updatedImgMdl._id.ToString(), updatedImgMdl);
+
+            return Ok();
+        }
+
+        [HttpDelete("ImgMdl/{id}")]
+        public async Task<IActionResult> DeleteImgMdl(string id)
+        {
+            await _bulletinService.RemoveImgMdlAsync(id);
+
+            return Ok();
+        }
+
+        [HttpDelete("ImgMdlAll")]
+        public async Task<IActionResult> DeleteAllImgMdls()
+        {
+            await _bulletinService.RemoveAllImgMdlsAsync();
+
+            return Ok();
+        }
+
+        //Img
+
+        [HttpGet("Img")]
+        public async Task<List<ImageDB>> GetImg() => await _bulletinService.GetImgsAsync();
+
+        [HttpPost("Img")]
+        public async Task<IActionResult> PostImg(ImageDB newImage)
+        {
+            await _bulletinService.CreateImgAsync(newImage);
+
+            return CreatedAtAction(nameof(GetImg), new { id = newImage._id }, newImage);
+        }
+
+        [HttpDelete("Img/{id}")]
+        public async Task<IActionResult> DeleteImg(string id)
+        {
+            await _bulletinService.RemoveImgAsync(id);
+
+            return Ok();
+        }
+
+        [HttpDelete("ImgAll")]
+        public async Task<IActionResult> DeleteImgsAll()
+        {
+            await _bulletinService.RemoveAllImgsAsync();
 
             return Ok();
         }
