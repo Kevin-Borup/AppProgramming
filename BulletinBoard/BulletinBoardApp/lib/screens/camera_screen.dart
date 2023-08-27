@@ -28,11 +28,12 @@ class CameraScreenState extends State<CameraScreen> {
 
   Future _setupCamera(CameraDescription cameraDescription) async {
     // To display the current output from the Camera,
-    // create a CameraController.
+    // get a CameraController.
     _cameraController =
         CameraController(cameraDescription, ResolutionPreset.high);
-    // Next, initialize the controller. This returns a Future.
+
     try {
+      // Saving the initialize, to use in futurebuilder
       _initializeControllerFuture = _cameraController.initialize();
       if (!mounted) return;
       setState(() {});
@@ -45,6 +46,7 @@ class CameraScreenState extends State<CameraScreen> {
     final ImageBloc imageBloc = BlocProvider.of<ImageBloc>(context);
 
     try {
+      // Checking if ressources on controller is available
       if (!_cameraController.value.isInitialized) return;
       if (_cameraController.value.isTakingPicture) return;
       final xImage = await _cameraController.takePicture();
@@ -67,10 +69,12 @@ class CameraScreenState extends State<CameraScreen> {
       final params = SaveFileDialogParams(sourceFilePath: file.path);
       final finalPath = await FlutterFileDialog.saveFile(params: params);
 
+      // Only save if the prompt ends with a finalpath value.
       if (finalPath != null) {
         imageBloc.add(PostImageEvent(bytes));
       }
 
+      // Shows a message, informing the user of a picture having been saved.
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Picture saved")));
     } catch (e) {
@@ -88,12 +92,12 @@ class CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-    _setupCamera(widget.cameras[0]);
+    _setupCamera(widget.cameras[0]);//Initial setup on rear camera
   }
 
   @override
   void dispose() {
-    // Dispose of the controller when the widget is disposed.
+    // Disposal of camera to free resources
     _cameraController.dispose();
     super.dispose();
   }

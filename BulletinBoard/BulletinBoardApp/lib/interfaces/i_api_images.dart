@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:bulletin_board_app/data/models/image_model.dart';
 
+//The api repository, to be implemented for all to-be data access layers.
 abstract class IApiImages {
 
   Future<List<ImageModel>> getAllImageModels();

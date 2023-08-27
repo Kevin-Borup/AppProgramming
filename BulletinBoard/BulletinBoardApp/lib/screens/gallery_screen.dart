@@ -16,10 +16,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
   @override
   void didChangeMetrics() {
     _currentOrientation = MediaQuery.of(context).orientation;
-    if (kDebugMode) {
+    if (kDebugMode) { // kDebugMode means this if is only true whilst debugging
       print('Before Orientation Change: $_currentOrientation');
     }
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) { // Fixes a potential issue of MediaQuery not always being updated fast enough
       setState(() {
         _currentOrientation = MediaQuery.of(context).orientation;
       });
@@ -31,7 +31,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _currentOrientation = MediaQuery.of(context).orientation;
+    _currentOrientation = MediaQuery.of(context).orientation; //Using the orientation to determine the build
 
     return Scaffold(
       appBar: AppBar(title: const Text('Gallery')),

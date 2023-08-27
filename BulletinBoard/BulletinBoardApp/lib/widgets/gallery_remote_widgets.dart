@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bulletin_board_app/data/bloc/states/image_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 import '../data/bloc/events/image_events.dart';
 import '../data/bloc/image_bloc.dart';
@@ -30,7 +28,7 @@ class _GalleryRemoteWidgetState extends State<GalleryRemoteWidget> {
   Widget build(BuildContext context) {
     final ImageBloc imageBloc = BlocProvider.of<ImageBloc>(context);
     return Scaffold(
-        body: BlocListener<ImageBloc, ImageState>(
+        body: BlocListener<ImageBloc, ImageState>( // Calls setState when state is complete, reloads widget, so child can use updated data.
       listener: (listenContext, ImageState state) {
         if (state.currentState == ImageStates.complete) {
           setState(() {

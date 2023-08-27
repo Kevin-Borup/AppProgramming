@@ -1,9 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-
-import '../../models/image_model.dart';
-
 abstract class ImageEvent {}
 
 class PostImageEvent implements ImageEvent {

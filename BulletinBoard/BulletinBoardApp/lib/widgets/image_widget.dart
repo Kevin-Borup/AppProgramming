@@ -1,4 +1,4 @@
-import 'package:bulletin_board_app/data/bloc/events/image_model_events.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,9 +26,7 @@ class _ImageWidgetState extends State<ImageWidget> {
   late double angle;
 
   late Offset _startingFocalPoint;
-  late Offset _previousOffset = Offset(0, 0);
-
-  // late double _previousZoom;
+  late Offset _previousOffset = const Offset(0, 0);
 
   double _scaleFactor = 0.5;
   double _baseScaleFactor = 0.5;
@@ -61,7 +59,6 @@ class _ImageWidgetState extends State<ImageWidget> {
                 setState(() {
                   _startingFocalPoint = details.focalPoint;
                   _previousOffset = _offset;
-                  // _previousZoom = _scale;
                   _baseScaleFactor = _scaleFactor;
                 });
               },
@@ -73,6 +70,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                     size = size * _scaleFactor;
                     angle = details.rotation;
                   } else if (details.pointerCount == 1){ //1 finger
+                    //Normalizing movement, to fix relativity movement.
                     final Offset normalizedOffset = _startingFocalPoint - _previousOffset;
                     _offset = details.focalPoint - normalizedOffset;
                   }

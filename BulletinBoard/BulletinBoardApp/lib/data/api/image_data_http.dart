@@ -10,6 +10,7 @@ class ImageDataHttp implements IApiImages {
   // IOS to the PC: http://localhost:port or http://127.0.0.1:port
   // Android to the PC: http://10.0.2.2:port
 
+  //Mix these urls to create 2 endpoints, 2 categories for board models, and image list.
   final String _baseURL = 'http://10.0.2.2:32772/api/Bulletin';
   final String _imgMdlEndPoint = '/ImgMdl';
   final String _imgEndPoint = '/Img';
@@ -67,7 +68,7 @@ class ImageDataHttp implements IApiImages {
   }
 
   @override
-  void deleteImageModel(ImageModel imgMdl) async {
+  void deleteImageModel(ImageModel imgMdl) async { //Url parameter to directly specify ID, instead of a Json body
     final response = await http.delete(Uri.parse("$_baseURL$_imgMdlEndPoint/${imgMdl.dbID}"),
         headers: <String, String>{'Content-Type': 'application/json'});
 
@@ -82,7 +83,7 @@ class ImageDataHttp implements IApiImages {
   }
 
   @override
-  void deleteAllImageModels() async {
+  void deleteAllImageModels() async { //Url extended with all, to lower chance of accidentally calling this endpoint
     final response = await http.delete(Uri.parse("$_baseURL$_imgMdlEndPoint""All"),
         headers: <String, String>{'Content-Type': 'application/json'});
 
@@ -152,7 +153,7 @@ class ImageDataHttp implements IApiImages {
   }
 
   @override
-  void deleteAllImages() async {
+  void deleteAllImages() async {  //Url extended with all, to lower chance of accidentally calling this endpoint
     final response = await http.delete(Uri.parse("$_baseURL$_imgEndPoint""All"),
         headers: <String, String>{'Content-Type': 'application/json'});
 

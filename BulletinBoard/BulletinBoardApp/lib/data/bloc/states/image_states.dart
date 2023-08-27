@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:bulletin_board_app/data/models/image_model.dart';
-
 enum ImageStates { initial, uploading, loading, deleting, complete, error }
 
 class ImageState {

@@ -12,12 +12,15 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
     on<DeleteImageEvent>(_onDeleteImage);
     on<GetAllImagesEvent>(_getAllImage);
     on<PostImageAndGetAllEvent>(_onPostImageAndGetAll);
+    //On the relevant event, call the method contained in the following parentheses.
   }
 
-  final _api = locator<IApiImages>();
+  final _api =
+      locator<IApiImages>(); //Using the locator to get the Api interface
 
-  void _onPostImage(
-      PostImageEvent event, Emitter<ImageState> emit) async {
+  //All the functions follow the same pattern, of initial state. Then the relevant loading or uploading.
+  // Then either an error, or completed, typically with an emit, to invoke the new value to any listeners of ImageModelState
+  void _onPostImage(PostImageEvent event, Emitter<ImageState> emit) async {
     emit(ImageState(state: ImageStates.uploading));
 
     try {
@@ -29,8 +32,7 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
     emit(ImageState(state: ImageStates.complete));
   }
 
-  void _onDeleteImage(
-      DeleteImageEvent event, Emitter<ImageState> emit) async {
+  void _onDeleteImage(DeleteImageEvent event, Emitter<ImageState> emit) async {
     emit(ImageState(state: ImageStates.deleting));
 
     try {
@@ -42,8 +44,7 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
     emit(ImageState(state: ImageStates.complete));
   }
 
-  void _getAllImage(
-      GetAllImagesEvent event, Emitter<ImageState> emit) async {
+  void _getAllImage(GetAllImagesEvent event, Emitter<ImageState> emit) async {
     emit(ImageState(state: ImageStates.loading));
 
     List<Image> imgs = [];

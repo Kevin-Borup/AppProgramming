@@ -19,24 +19,15 @@ class ImageModel {
   late Size size;
   late double angle;
 
-  void updateOffsetSizeAngle(Offset p, Size s, double a){
+  void updateOffsetSizeAngle(Offset p, Size s, double a) {
     position = p;
     size = s;
     angle = a;
   }
 
-  void updatePositionOffset(Offset p) => position = p;
-
-  void updatePositionXY(double x, double y) => position = Offset(x, y);
-
-  void updateSizeXY(double x, double y) => size = Size(x, y);
-
-  void updateSizeS(Size s) => size = s;
-
-  void updateAngle(double a) => angle = a;
-
   ImageWidget toImageWidget() {
-    return ImageWidget(imgMdl: this, img: img, position: position, size: size, ang: angle);
+    return ImageWidget(
+        imgMdl: this, img: img, position: position, size: size, ang: angle);
   }
 
   factory ImageModel.fromJson(Map<String, dynamic> json) {
@@ -45,6 +36,8 @@ class ImageModel {
       double newValue = 0;
 
       try {
+        //Json issues parsin whole numbers to double.
+        //Forcing it to double, if it success
         if (value is int) {
           int tempInt = value;
           newValue = tempInt + 0.0;
@@ -65,8 +58,10 @@ class ImageModel {
         dbID: json['_id'].toString(),
         img: image,
         bytes: byte,
-        position: Offset(tryParseToDouble(json['X']), tryParseToDouble(json['Y'])),
-        size: Size(tryParseToDouble(json['Width']), tryParseToDouble(json['Height'])),
+        position:
+            Offset(tryParseToDouble(json['X']), tryParseToDouble(json['Y'])),
+        size: Size(
+            tryParseToDouble(json['Width']), tryParseToDouble(json['Height'])),
         angle: tryParseToDouble(json['Angle']));
   }
 
@@ -75,6 +70,7 @@ class ImageModel {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
+    //Only include if an ID is found, if not, MongoDB will assume it's a new entry and add it.
     dbID ?? result.addAll({'_id': dbID});
     result.addAll({'Image64': base64.encode(bytes)});
     result.addAll({'X': position.dx});

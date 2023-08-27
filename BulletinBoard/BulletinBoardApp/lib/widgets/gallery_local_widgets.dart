@@ -1,12 +1,7 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
-
-import '../data/bloc/events/image_events.dart';
-import '../data/bloc/image_bloc.dart';
 
 class GalleryLocalWidget extends StatefulWidget {
   const GalleryLocalWidget({super.key});
@@ -39,7 +34,7 @@ class _GalleryLocalWidgetState extends State<GalleryLocalWidget> {
         tempImages.add(Image.file(tempFile));
       }
 
-      if (!mounted) return;
+      if (!mounted) return; //Checking if the state object is still in the tree.
       setState(() {
         _localImages = tempImages;
         _loadingLocalImages = false;

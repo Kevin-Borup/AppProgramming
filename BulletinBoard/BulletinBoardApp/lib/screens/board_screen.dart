@@ -1,23 +1,13 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:bulletin_board_app/data/bloc/events/image_events.dart';
 import 'package:bulletin_board_app/data/bloc/events/image_model_events.dart';
 import 'package:bulletin_board_app/data/bloc/image_model_bloc.dart';
-import 'package:bulletin_board_app/screens/camera_screen.dart';
 import 'package:bulletin_board_app/widgets/gallery_full_widgets.dart';
-import 'package:bulletin_board_app/widgets/gallery_remote_widgets.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 import '../data/bloc/image_bloc.dart';
 import '../data/bloc/states/image_model_states.dart';
-import '../data/bloc/states/image_states.dart';
 import '../data/models/image_model.dart';
-import '../widgets/image_widget.dart';
 
 class BoardScreen extends StatefulWidget {
   const BoardScreen({super.key});
@@ -27,37 +17,6 @@ class BoardScreen extends StatefulWidget {
 }
 
 class _BoardScreenState extends State<BoardScreen> {
-  late List<Image> _localImages;
-  late bool _loadingLocalImages = true;
-  late bool _loadingRemoteImages = true;
-
-  Future<void> _getLocalImages() async {
-    // AssetPathEntity is an abstraction of albums and folders
-    List<AssetPathEntity> assetFolders = [];
-    assetFolders = await PhotoManager.getAssetPathList(
-        onlyAll: true, type: RequestType.image);
-
-    int assetCount = await assetFolders[0].assetCountAsync;
-
-    if (assetCount > 0) {
-      // AssetEntity is an abstraction of pictures, videos and audio. (Requested to Image previously).
-      List<AssetEntity> assetImages =
-          await assetFolders[0].getAssetListRange(start: 0, end: assetCount);
-
-      List<Image> tempImages = [];
-      for (var asset in assetImages) {
-        File? tempFile = await asset.file;
-        if (tempFile == null) continue;
-        tempImages.add(Image.file(tempFile));
-      }
-
-      setState(() {
-        _localImages = tempImages;
-        _loadingLocalImages = false;
-      });
-    }
-  }
-
   void _insertImage() {
     final ImageBloc imageBloc = BlocProvider.of<ImageBloc>(context);
     final ImageModelBloc imageModelBloc =
@@ -89,7 +48,6 @@ class _BoardScreenState extends State<BoardScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Board')),
-      backgroundColor: const Color.fromRGBO(158, 170, 186, 1.0),
       body: SafeArea(
         child: Scaffold(
           body: BlocBuilder<ImageModelBloc, ImageModelState>(

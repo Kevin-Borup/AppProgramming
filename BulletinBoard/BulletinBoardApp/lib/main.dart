@@ -1,4 +1,3 @@
-
 import 'package:bulletin_board_app/data/bloc/image_bloc.dart';
 import 'package:bulletin_board_app/data/bloc/image_model_bloc.dart';
 import 'package:bulletin_board_app/screens/board_screen.dart';
@@ -54,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<CameraDescription>? cameras = null;
   int _selectedIndex = 0;
 
+  // Reloads body, with new index, loading a different page.
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -64,8 +64,9 @@ class _MyHomePageState extends State<MyHomePage> {
     cameras = await availableCameras();
   }
 
-  Widget camScreen(){
-    if (cameras != null){
+  //Display camera screen, or "failure" screen, if no camera exists.
+  Widget camScreen() {
+    if (cameras != null) {
       return CameraScreen(cameras: cameras!);
     } else {
       return Scaffold(
@@ -80,17 +81,18 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _findCameras();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Method to open and close menu drawer.
+    // Miniminzes Context pops.
     toggleDrawer() async {
-      if (_scaffoldKey.currentState != null){
+      if (_scaffoldKey.currentState != null) {
         if (_scaffoldKey.currentState!.isDrawerOpen) {
           _scaffoldKey.currentState?.openEndDrawer();
         } else {
@@ -99,6 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
+    // Widget list to cycle through
     List<Widget> widgetScreens = <Widget>[
       const BoardScreen(),
       camScreen(),
@@ -108,13 +111,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: SafeArea(child: widgetScreens[_selectedIndex]), //Safe area so all screens fit with the devide.
+      body: SafeArea(child: widgetScreens[_selectedIndex]),
+      //Safe area so all screens fit with the devide.
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

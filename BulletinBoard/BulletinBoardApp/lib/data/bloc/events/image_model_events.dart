@@ -3,6 +3,8 @@ import '../../models/image_model.dart';
 
 abstract class ImageModelEvent {}
 
+//Events for all options
+
 class PostImageModelEvent implements ImageModelEvent {
   final ImageModel _imgMdl;
 
