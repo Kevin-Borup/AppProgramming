@@ -1,15 +1,7 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:bulletin_board_app/data/bloc/image_bloc.dart';
 import 'package:bulletin_board_app/widgets/gallery_local_widgets.dart';
 import 'package:bulletin_board_app/widgets/gallery_remote_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:photo_manager/photo_manager.dart';
-
-import '../data/bloc/states/image_states.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({super.key});

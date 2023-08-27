@@ -58,60 +58,6 @@ class _BoardScreenState extends State<BoardScreen> {
     }
   }
 
-  Widget _loadedPictures() {
-    List<Image> loadedImgs = [];
-    _getLocalImages();
-
-    // Both still loading
-    if (_loadingLocalImages & _loadingRemoteImages) {
-      return const CircularProgressIndicator();
-    }
-
-    if (!_loadingLocalImages) {
-      //Local done loading
-      loadedImgs = _localImages;
-    }
-
-    if (!_loadingRemoteImages) {
-      // Remote done loading
-      return BlocBuilder<ImageBloc, ImageState>(
-        builder: (blocContext, ImageState state) {
-          return _buildGrid(state.imgs + loadedImgs);
-        },
-      );
-    }
-
-    // BlocBuilder<ImageBloc, ImageState>(builder: (blocContext, ImageState state) {}
-    return _buildGrid(loadedImgs);
-  }
-
-  Widget _buildGrid(List<Image> imgs) {
-    final ImageModelBloc imageModelBloc = BlocProvider.of<ImageModelBloc>(context);
-
-    return GridView.builder(
-      itemCount: imgs.length,
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-      itemBuilder: (gridContext, int index) {
-        return BlocProvider.value(
-          value: imageModelBloc,
-          child: InkWell(
-            onLongPress: () {
-              Uint8List iByte = File(imgs[index].toString()).readAsBytesSync();
-              imageModelBloc.add(PostImageModelAndGetAllEvent(
-                  ImageModel(img: imgs[index], bytes: iByte)));
-            },
-            child: GridTile(
-              child: Container(
-                child: imgs[index],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void _insertImage() {
     final ImageBloc imageBloc = BlocProvider.of<ImageBloc>(context);
     final ImageModelBloc imageModelBloc =
@@ -134,34 +80,6 @@ class _BoardScreenState extends State<BoardScreen> {
                 ),
               ));
         });
-
-    // showDialog(
-    //     context: context,
-    //     builder: (dialogContext) {
-    //       return StatefulBuilder(builder: (stateBuilder, setState) {
-    //         return BlocProvider.value(
-    //           value: imageBloc,
-    //           child: AlertDialog(
-    //             content: FractionallySizedBox(
-    //               widthFactor: 0.8,
-    //               heightFactor: 0.7,
-    //               child: Center(
-    //                 child: BlocListener<ImageBloc, ImageState>(
-    //                     listener: (blocContext, ImageState state) {
-    //                       //Remains in loading until the state emits complete.
-    //                       if (state.currentState == ImageStates.complete) {
-    //                         setState(() {
-    //                           _loadingRemoteImages = false;
-    //                         });
-    //                       }
-    //                     },
-    //                     child: _loadedPictures()),
-    //               ),
-    //             ),
-    //           ),
-    //         );
-    //       });
-    //     });
   }
 
   @override
@@ -177,6 +95,7 @@ class _BoardScreenState extends State<BoardScreen> {
           body: BlocBuilder<ImageModelBloc, ImageModelState>(
               builder: (blocContext, ImageModelState state) {
             return Stack(
+              alignment: Alignment.center,
                 children: state.imgs
                     .map((ImageModel image) => image.toImageWidget())
                     .toList());

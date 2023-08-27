@@ -63,7 +63,7 @@ class ImageModelBloc extends Bloc<ImageModelEvent, ImageModelState> {
       emit(ImageModelState(state: ImageModelStates.uploading));
 
       try {
-        // api.postImageModel(event.img);
+        _api.deleteAllImageModels();
       } on Exception {
         emit(ImageModelState(state: ImageModelStates.error));
       }
