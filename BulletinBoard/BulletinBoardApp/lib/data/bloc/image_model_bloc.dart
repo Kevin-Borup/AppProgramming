@@ -3,6 +3,7 @@ import 'package:bulletin_board_app/data/bloc/events/image_model_events.dart';
 import 'package:bulletin_board_app/data/bloc/states/image_model_states.dart';
 import 'package:bulletin_board_app/data/models/image_model.dart';
 import 'package:bulletin_board_app/interfaces/i_api_images.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../services/service_locator.dart';
 

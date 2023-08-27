@@ -23,7 +23,7 @@ class _GalleryFullWidgetState extends State<GalleryFullWidget> {
   late bool _remoteLoading = true;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     final ImageBloc imageBloc = BlocProvider.of<ImageBloc>(context);
     imageBloc.add(GetAllImagesEvent());
@@ -31,47 +31,52 @@ class _GalleryFullWidgetState extends State<GalleryFullWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final ImageModelBloc imageModelBloc = BlocProvider.of<ImageModelBloc>(context);
+    final ImageModelBloc imageModelBloc =
+        BlocProvider.of<ImageModelBloc>(context);
     return Scaffold(
-      body: BlocListener<ImageBloc, ImageState>(
-        listener: (listenContext, ImageState state) {
-          if(state.currentState == ImageStates.complete){
-            setState(() {
-              _remoteLoading = false;
-            });
-          }
-        },
-        child: _remoteLoading ? const CircularProgressIndicator():
-        BlocBuilder<ImageBloc, ImageState>(
-          builder: (blocContext, ImageState state) {
-            return GridView.builder(
-              itemCount: state.imgs.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3),
-              itemBuilder: (gridContext, int index) {
-                return InkWell(
-                  onLongPress: () async {
-                    Image image = state.imgs[index];
-                    // Uint8List ibytes = image.image.
-                    // imageModelBloc.add(PostImageModelAndGetAllEvent(ImageModel(img: image, bytes: )))
-                    // Not working for now.
-                    // Extracting bytes from an image without file path is unnecessarily complicated.
-                    // Uint8List iByte =
-                    // File(state.imgs[index].toString())).readAsBytesSync();
-                    // imageBloc.add(DeleteImageEvent(iByte));
-                    // imageBloc.add(GetAllImagesEvent());
+        body: BlocListener<ImageBloc, ImageState>(
+      listener: (listenContext, ImageState state) {
+        if (state.currentState == ImageStates.complete) {
+          setState(() {
+            _remoteLoading = false;
+          });
+        }
+      },
+      child: _remoteLoading
+          ? const CircularProgressIndicator()
+          : BlocBuilder<ImageBloc, ImageState>(
+              builder: (blocContext, ImageState state) {
+                return GridView.builder(
+                  itemCount: state.imgs.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3),
+                  itemBuilder: (gridContext, int index) {
+                    return InkWell(
+                      onLongPress: () async {
+                        Uint8List iBytes =
+                            (state.imgs[index].image as MemoryImage).bytes;
+                        Image image = Image.memory(iBytes);
+
+                        Size newSize = Size(60, 60);
+                        Offset newPos = Offset(MediaQuery.of(context).size.width / 2, MediaQuery.of(context).size.height / 2);
+                        //Fractional measure of position would be a better way to track position.
+                        //Meaning device changes would move them proportionally to their size.
+                        //Would've developed that for production, settling for this in this project.
+
+                        imageModelBloc.add(PostImageModelAndGetAllEvent(
+                            ImageModel(img: image, bytes: iBytes, position: newPos, size: newSize)));
+
+                      },
+                      child: GridTile(
+                        child: Container(
+                          child: state.imgs[index],
+                        ),
+                      ),
+                    );
                   },
-                  child: GridTile(
-                    child: Container(
-                      child: state.imgs[index],
-                    ),
-                  ),
                 );
               },
-            );
-          },
-        ),
-      )
-    );
+            ),
+    ));
   }
 }

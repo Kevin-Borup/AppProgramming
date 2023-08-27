@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
             .inversePrimary,
         title: Text(widget.title),
       ),
-      body: widgetScreens[_selectedIndex],
+      body: SafeArea(child: widgetScreens[_selectedIndex]), //Safe area so all screens fit with the devide.
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

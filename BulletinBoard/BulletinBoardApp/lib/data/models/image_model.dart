@@ -10,14 +10,20 @@ class ImageModel {
       required this.bytes,
       this.position = Offset.zero,
       this.size = Size.zero,
-      this.ang = 0});
+      this.angle = 0});
 
   late String? dbID;
   final Image img;
   final Uint8List bytes;
   late Offset position;
-  late Size size = const Size(40, 40);
-  late double ang = 0;
+  late Size size;
+  late double angle;
+
+  void updateOffsetSizeAngle(Offset p, Size s, double a){
+    position = p;
+    size = s;
+    angle = a;
+  }
 
   void updatePositionOffset(Offset p) => position = p;
 
@@ -27,10 +33,10 @@ class ImageModel {
 
   void updateSizeS(Size s) => size = s;
 
-  void updateAngle(double a) => ang = a;
+  void updateAngle(double a) => angle = a;
 
   ImageWidget toImageWidget() {
-    return ImageWidget(img: img, position: position, size: size, ang: ang);
+    return ImageWidget(imgMdl: this, img: img, position: position, size: size, ang: angle);
   }
 
   factory ImageModel.fromJson(Map<String, dynamic> json) {
@@ -61,7 +67,7 @@ class ImageModel {
         bytes: byte,
         position: Offset(tryParseToDouble(json['X']), tryParseToDouble(json['Y'])),
         size: Size(tryParseToDouble(json['Width']), tryParseToDouble(json['Height'])),
-        ang: tryParseToDouble(json['Angle']));
+        angle: tryParseToDouble(json['Angle']));
   }
 
   String toJson() => json.encode(toMap());
@@ -75,7 +81,7 @@ class ImageModel {
     result.addAll({'Y': position.dy});
     result.addAll({'Width': size.width});
     result.addAll({'Height': size.height});
-    result.addAll({'Angle': ang});
+    result.addAll({'Angle': angle});
 
     return result;
   }

@@ -1,9 +1,15 @@
+import 'package:bulletin_board_app/data/bloc/events/image_model_events.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../data/bloc/image_model_bloc.dart';
+import '../data/models/image_model.dart';
 
 class ImageWidget extends StatefulWidget {
-  const ImageWidget(
-      {super.key, required this.img, this.position, this.size, this.ang});
+   ImageWidget(
+      {super.key, required this.imgMdl, required this.img, this.position, this.size, this.ang});
 
+  late ImageModel imgMdl;
   final Image img;
   final Offset? position;
   final Size? size;
@@ -15,48 +21,91 @@ class ImageWidget extends StatefulWidget {
 
 class _ImageWidgetState extends State<ImageWidget> {
   late Image img;
-  late Offset position;
+  late Offset _offset;
   late Size size;
-  late double ang;
+  late double angle;
+
+  late Offset _startingFocalPoint;
+  late Offset _previousOffset = Offset(0, 0);
+
+  // late double _previousZoom;
+
+  double _scaleFactor = 0.5;
+  double _baseScaleFactor = 0.5;
 
   @override
   void initState() {
     super.initState();
     img = widget.img;
-    position = widget.position ?? const Offset(0, 0);
+    _offset = widget.position ?? const Offset(0, 0);
     size = widget.size ?? const Size(30, 30);
-    ang = widget.ang ?? 0.0;
+    angle = widget.ang ?? 0.0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Positioned(
-        left: position.dx,
-        top: position.dy,
-        child: Transform.rotate(
-          angle: ang,
-          child: SizedBox(
-            height: size.height,
-            width: size.width,
-            child: Center(
-              child: GestureDetector(
-                // onPanStart: (dragDetails) => {},
-                // onPanUpdate: (dragDetails) => {},
-                // onPanEnd: (dragDetails) => {},
+    final ImageModelBloc imageModelBloc = BlocProvider.of<ImageModelBloc>(context);
 
-                onScaleStart: (scaleDetails) => {},
-                onScaleUpdate: (scaleDetails) => {},
-                onScaleEnd: (scaleDetails) => {},
+    return Positioned(
+      left: _offset.dx,
+      top: _offset.dy,
+      child: Transform.rotate(
+        angle: angle,
+        child: SizedBox(
+          height: size.height,
+          width: size.width,
+          child: Center(
+            child: GestureDetector(
+              //Scale contains details of paning with focalPoint, rotation and scale.
+              onScaleStart: (details) {
+                setState(() {
+                  _startingFocalPoint = details.focalPoint;
+                  _previousOffset = _offset;
+                  // _previousZoom = _scale;
+                  _baseScaleFactor = _scaleFactor;
+                });
+              },
 
-                child: img,
+              onScaleUpdate: (details) {
+                setState(() {
+                  if (details.pointerCount == 2){ //2 fingers
+                    _scaleFactor = _baseScaleFactor * details.scale;
+                    size = size * _scaleFactor;
+                    angle = details.rotation;
+                  } else if (details.pointerCount == 1){ //1 finger
+                    final Offset normalizedOffset = _startingFocalPoint - _previousOffset;
+                    _offset = details.focalPoint - normalizedOffset;
+                  }
+                });
+              },
+              onScaleEnd: (scaleDetails)  {
+                // //Updates their properties in the DB, to save it for next session.
+                // //Disabled for now
+                // widget.imgMdl.updateOffsetSizeAngle(position, size, angle);
+                // imageModelBloc.add(UpdateImageModelEvent(widget.imgMdl));
+              },
+
+              child: Container(
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 6),
+                      blurRadius: 5,
+                      offset: Offset(0, 2),
+                      spreadRadius: 0.5,
+                    )
+                  ]
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: img,
+
+              ) ,
               ),
             ),
           ),
         ),
       ),
-    ));
+    );
   }
 }

@@ -20,7 +20,7 @@ class _GalleryRemoteWidgetState extends State<GalleryRemoteWidget> {
   late bool _remoteLoading = true;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     final ImageBloc imageBloc = BlocProvider.of<ImageBloc>(context);
     imageBloc.add(GetAllImagesEvent());
@@ -30,42 +30,40 @@ class _GalleryRemoteWidgetState extends State<GalleryRemoteWidget> {
   Widget build(BuildContext context) {
     final ImageBloc imageBloc = BlocProvider.of<ImageBloc>(context);
     return Scaffold(
-      body: BlocListener<ImageBloc, ImageState>(
-        listener: (listenContext, ImageState state) {
-          if(state.currentState == ImageStates.complete){
-            setState(() {
-              _remoteLoading = false;
-            });
-          }
-        },
-        child: _remoteLoading ? const CircularProgressIndicator():
-        BlocBuilder<ImageBloc, ImageState>(
-          builder: (blocContext, ImageState state) {
-            return GridView.builder(
-              itemCount: state.imgs.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3),
-              itemBuilder: (gridContext, int index) {
-                return InkWell(
-                  onLongPress: () async {
-                    // Not working for now.
-                    // Extracting bytes from an image without file path is unnecessarily complicated.
-                    // Uint8List iByte =
-                    // File(state.imgs[index].toString())).readAsBytesSync();
-                    // imageBloc.add(DeleteImageEvent(iByte));
-                    // imageBloc.add(GetAllImagesEvent());
+        body: BlocListener<ImageBloc, ImageState>(
+      listener: (listenContext, ImageState state) {
+        if (state.currentState == ImageStates.complete) {
+          setState(() {
+            _remoteLoading = false;
+          });
+        }
+      },
+      child: _remoteLoading
+          ? const CircularProgressIndicator()
+          : BlocBuilder<ImageBloc, ImageState>(
+              builder: (blocContext, ImageState state) {
+                return GridView.builder(
+                  itemCount: state.imgs.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3),
+                  itemBuilder: (gridContext, int index) {
+                    return InkWell(
+                      onLongPress: () async {
+                        Uint8List iBytes =
+                            (state.imgs[index].image as MemoryImage).bytes;
+                        imageBloc.add(DeleteImageEvent(iBytes));
+                        imageBloc.add(GetAllImagesEvent());
+                      },
+                      child: GridTile(
+                        child: Container(
+                          child: state.imgs[index],
+                        ),
+                      ),
+                    );
                   },
-                  child: GridTile(
-                    child: Container(
-                      child: state.imgs[index],
-                    ),
-                  ),
                 );
               },
-            );
-          },
-        ),
-      )
-    );
+            ),
+    ));
   }
 }

@@ -86,22 +86,25 @@ class _BoardScreenState extends State<BoardScreen> {
   }
 
   Widget _buildGrid(List<Image> imgs) {
-    final ImageModelBloc imageBloc = BlocProvider.of<ImageModelBloc>(context);
+    final ImageModelBloc imageModelBloc = BlocProvider.of<ImageModelBloc>(context);
 
     return GridView.builder(
       itemCount: imgs.length,
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       itemBuilder: (gridContext, int index) {
-        return InkWell(
-          onLongPress: () {
-            Uint8List iByte = File(imgs[index].toString()).readAsBytesSync();
-            imageBloc.add(PostImageModelAndGetAllEvent(
-                ImageModel(img: imgs[index], bytes: iByte)));
-          },
-          child: GridTile(
-            child: Container(
-              child: imgs[index],
+        return BlocProvider.value(
+          value: imageModelBloc,
+          child: InkWell(
+            onLongPress: () {
+              Uint8List iByte = File(imgs[index].toString()).readAsBytesSync();
+              imageModelBloc.add(PostImageModelAndGetAllEvent(
+                  ImageModel(img: imgs[index], bytes: iByte)));
+            },
+            child: GridTile(
+              child: Container(
+                child: imgs[index],
+              ),
             ),
           ),
         );
@@ -111,21 +114,25 @@ class _BoardScreenState extends State<BoardScreen> {
 
   void _insertImage() {
     final ImageBloc imageBloc = BlocProvider.of<ImageBloc>(context);
+    final ImageModelBloc imageModelBloc =
+        BlocProvider.of<ImageModelBloc>(context);
     imageBloc.add(GetAllImagesEvent());
 
     showDialog(
         context: context,
         builder: (dialogContext) {
           return BlocProvider.value(
-            value: imageBloc,
-            child: const AlertDialog(
-              content: FractionallySizedBox(
-                widthFactor: 0.8,
-                heightFactor: 0.7,
-                child: Center(child: GalleryFullWidget()),
-              ),
-            ),
-          );
+              value: imageBloc,
+              child: BlocProvider.value(
+                value: imageModelBloc,
+                child: const AlertDialog(
+                  content: FractionallySizedBox(
+                    widthFactor: 0.8,
+                    heightFactor: 0.7,
+                    child: Center(child: GalleryFullWidget()),
+                  ),
+                ),
+              ));
         });
 
     // showDialog(
@@ -167,21 +174,13 @@ class _BoardScreenState extends State<BoardScreen> {
       backgroundColor: const Color.fromRGBO(158, 170, 186, 1.0),
       body: SafeArea(
         child: Scaffold(
-          body: LimitedBox(
-            maxHeight: MediaQuery.of(context).size.height,
-            maxWidth: MediaQuery.of(context).size.width,
-            child: Column(children: [
-              Stack(children: [
-                BlocBuilder<ImageModelBloc, ImageModelState>(
-                    builder: (blocContext, ImageModelState state) {
-                  return Stack(
-                      children: state.imgs
-                          .map((ImageModel image) => image.toImageWidget())
-                          .toList());
-                }),
-              ]),
-            ]),
-          ),
+          body: BlocBuilder<ImageModelBloc, ImageModelState>(
+              builder: (blocContext, ImageModelState state) {
+            return Stack(
+                children: state.imgs
+                    .map((ImageModel image) => image.toImageWidget())
+                    .toList());
+          }),
           floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
           floatingActionButton: FloatingActionButton(
               onPressed: () {
