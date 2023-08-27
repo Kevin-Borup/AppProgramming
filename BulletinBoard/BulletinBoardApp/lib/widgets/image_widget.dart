@@ -42,8 +42,6 @@ class _ImageWidgetState extends State<ImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    img.height = img.height * 0.5;
-
     final ImageModelBloc imageModelBloc =
         BlocProvider.of<ImageModelBloc>(context);
     final ValueNotifier<Matrix4> notifier = ValueNotifier(Matrix4.identity());
