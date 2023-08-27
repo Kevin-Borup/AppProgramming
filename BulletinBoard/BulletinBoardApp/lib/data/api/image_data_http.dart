@@ -36,13 +36,18 @@ class ImageDataHttp implements IApiImages {
   }
 
   @override
-  void postImageModel(ImageModel imgMdl) async {
+  Future<ImageModel> postImageModel(ImageModel imgMdl) async {
     final response = await http.post(Uri.parse(_baseURL + _imgMdlEndPoint),
         headers: <String, String>{'Content-Type': 'application/json'},
         body: imgMdl.toJson());
 
     if (response.statusCode == 201) {
       // If the server did return a 201 ADDED response.
+      //Get updated ImageModel with an ID
+      ImageModel updatedImgMdl = ImageModel.fromJson(json.decode(response.body));
+
+      return updatedImgMdl;
+
     } else {
       // If the server did not return a 201 ADDED response,
       // then throw an exception.

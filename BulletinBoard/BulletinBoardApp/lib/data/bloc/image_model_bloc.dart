@@ -26,12 +26,15 @@ class ImageModelBloc extends Bloc<ImageModelEvent, ImageModelState> {
         PostImageModelEvent event, Emitter<ImageModelState> emit) async {
       emit(ImageModelState(state: ImageModelStates.uploading));
 
+      ImageModel? updatedImgMdl;
+
       try {
-        _api.postImageModel(event.imgMdl);
+        updatedImgMdl = await _api.postImageModel(event.imgMdl);
       } on Exception {
         emit(ImageModelState(state: ImageModelStates.error));
       }
 
+      // emit(ImageModelState(state: ImageModelStates.complete, imgs: List.filled(1, updatedImgMdl!)));
       emit(ImageModelState(state: ImageModelStates.complete));
     }
 

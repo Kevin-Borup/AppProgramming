@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:bulletin_board_app/widgets/image_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:realm/realm.dart';
 
 class ImageModel {
   ImageModel(
@@ -36,7 +37,7 @@ class ImageModel {
       double newValue = 0;
 
       try {
-        //Json issues parsin whole numbers to double.
+        //Json issues parsing whole numbers to double.
         //Forcing it to double, if it success
         if (value is int) {
           int tempInt = value;
@@ -50,9 +51,12 @@ class ImageModel {
 
       return newValue;
     }
+    // ObjectId id = json['_id'];
+    // var test = .toString();
 
     var byte = base64.decode(json['Image64'] as String);
     var image = Image.memory(byte);
+
 
     return ImageModel(
         dbID: json['_id'].toString(),
@@ -71,7 +75,7 @@ class ImageModel {
     final result = <String, dynamic>{};
 
     //Only include if an ID is found, if not, MongoDB will assume it's a new entry and add it.
-    dbID ?? result.addAll({'_id': dbID});
+    if(dbID != null) dbID ?? result.addAll({'_id': dbID});
     result.addAll({'Image64': base64.encode(bytes)});
     result.addAll({'X': position.dx});
     result.addAll({'Y': position.dy});

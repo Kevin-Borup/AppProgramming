@@ -7,7 +7,7 @@ import 'package:bulletin_board_app/data/models/image_model.dart';
 abstract class IApiImages {
 
   Future<List<ImageModel>> getAllImageModels();
-  void postImageModel(ImageModel imgMdl);
+  Future<ImageModel> postImageModel(ImageModel imgMdl);
   void updateImageModel(ImageModel imgMdl);
   void deleteImageModel(ImageModel imgMdl);
   void deleteAllImageModels();
