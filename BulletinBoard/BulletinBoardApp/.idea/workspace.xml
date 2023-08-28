@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="22932c93-8d34-47e8-8d63-cea828619261" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/.vs/BulletinBoardApi/DesignTimeBuild/.dtbcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/.vs/BulletinBoardApi/DesignTimeBuild/.dtbcache.v2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/.vs/BulletinBoardApi/v17/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/.vs/BulletinBoardApi/v17/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/BulletinBoardApi.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/BulletinBoardApi.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/BulletinBoardApi.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/BulletinBoardApi.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/BulletinBoardApi.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/BulletinBoardApi.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/BulletinBoardApi.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/BulletinBoardApi.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/Debug/net7.0/BulletinBoardApi.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BulletinBoardApi/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../BulletinBoardApi/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2UTCsnflflneNAp0hDLyAd3aDE0" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/ZBC Data-Kommunikation/H3/AppProgrammering/BulletinBoard/BulletinBoardApp&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="22932c93-8d34-47e8-8d63-cea828619261" name="Changes" comment="" />
+      <created>1692954392484</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1692954392484</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>
