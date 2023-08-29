@@ -40,8 +40,7 @@ namespace BulletinBoardApi.Controllers
 
                     var subject = new ClaimsIdentity(new[]
                     {
-                    new Claim(JwtRegisteredClaimNames.Sub, userLogin.Username),
-                    new Claim(JwtRegisteredClaimNames.Name, userLogin.Username),
+                    new Claim(ClaimTypes.Role, "User")
                     });
 
                     var tokenDescriptor = new SecurityTokenDescriptor
@@ -57,7 +56,7 @@ namespace BulletinBoardApi.Controllers
                     var token = tokenHandler.CreateToken(tokenDescriptor);
                     var jwtToken = tokenHandler.WriteToken(token);
 
-                    return Ok(new AccessToken { Token = jwtToken });
+                    return Ok(new Token { FullToken = jwtToken });
                 }
             }
 

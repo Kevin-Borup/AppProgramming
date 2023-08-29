@@ -41,7 +41,7 @@ class ImageDataHttp implements IApiImages {
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.getUrl(Uri.parse(_baseURL + _imgMdlEndPoint));
     request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
-    request.headers.add("Authorization", "Bearer $token");
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
 
     HttpClientResponse response = await request.close();
     if (response.statusCode == 200) {
@@ -67,7 +67,7 @@ class ImageDataHttp implements IApiImages {
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.postUrl(Uri.parse(_baseURL + _imgMdlEndPoint));
     request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
-    request.headers.add("Authorization", "Bearer $token");
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
     request.add(utf8.encode(imgMdl.toJson()));
 
     HttpClientResponse response = await request.close();
@@ -94,7 +94,7 @@ class ImageDataHttp implements IApiImages {
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.putUrl(Uri.parse(_baseURL + _imgMdlEndPoint));
     request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
-    request.headers.add("Authorization", "Bearer $token");
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
     request.add(utf8.encode(imgMdl.toJson()));
 
     HttpClientResponse response = await request.close();
@@ -121,7 +121,7 @@ class ImageDataHttp implements IApiImages {
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.deleteUrl(Uri.parse("$_baseURL$_imgMdlEndPoint/${imgMdl.dbID}"));
-    request.headers.add("Authorization", "Bearer $token");
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
 
     HttpClientResponse response = await request.close();
 
@@ -142,7 +142,7 @@ class ImageDataHttp implements IApiImages {
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.deleteUrl(Uri.parse("$_baseURL$_imgMdlEndPoint""All"));
     request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
-    request.headers.add("Authorization", "Bearer $token");
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
 
 
     HttpClientResponse response = await request.close();
@@ -163,7 +163,7 @@ class ImageDataHttp implements IApiImages {
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.getUrl(Uri.parse(_baseURL + _imgEndPoint));
-    request.headers.add("Authorization", "Bearer $token");
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
 
 
     HttpClientResponse response = await request.close();
@@ -195,7 +195,7 @@ class ImageDataHttp implements IApiImages {
 
     final request = await _httpClientService.httpClient.postUrl(Uri.parse(_baseURL + _imgEndPoint));
     request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
-    request.headers.add("Authorization", "Bearer $token");
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
     request.add(utf8.encode(json.encode(result)));
 
     HttpClientResponse response = await request.close();
@@ -216,7 +216,7 @@ class ImageDataHttp implements IApiImages {
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.deleteUrl(Uri.parse(_baseURL + _imgEndPoint));
     request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
-    request.headers.add("Authorization", "Bearer $token");
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
     request.add(utf8.encode(base64.encode(img)));
 
     HttpClientResponse response = await request.close();
@@ -237,7 +237,7 @@ class ImageDataHttp implements IApiImages {
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.deleteUrl(Uri.parse("$_baseURL$_imgEndPoint""All"));
     request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
-    request.headers.add("Authorization", "Bearer $token");
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
 
     HttpClientResponse response = await request.close();
 

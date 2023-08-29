@@ -1,6 +1,7 @@
 
 using BulletinBoardApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;

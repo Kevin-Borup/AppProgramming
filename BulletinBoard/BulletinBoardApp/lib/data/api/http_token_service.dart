@@ -42,11 +42,13 @@ class HttpTokenService{
     var response = await request.close();
     if (response.statusCode == 200) {
       String responseBody = await response.transform(utf8.decoder).join();
-      String token = json.decode(responseBody)['Token'];
+      // String fullToken = json.decode(respon
+      //       //
+      //       // var token = _parseJwt(fullToken)['key'];
+      //       //
+      //       // await _writeTokenSecureStorage(token);seBody)['FullToken'];
 
-      await _writeTokenSecureStorage(token);
-
-      return token;
+      return responseBody;
     }else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -62,6 +64,40 @@ class HttpTokenService{
 
   Future<String> _readTokenSecureStorage() async {
     return await _storage.read(key: _storageTokenKey) ?? "";
+  }
+
+  Map<String, dynamic> _parseJwt(String token) {
+    final parts = token.split('.');
+    if (parts.length != 3) {
+      throw Exception('invalid token');
+    }
+
+    final payload = _decodeBase64(parts[1]);
+    final payloadMap = json.decode(payload);
+    if (payloadMap is! Map<String, dynamic>) {
+      throw Exception('invalid payload');
+    }
+
+    return payloadMap;
+  }
+
+  String _decodeBase64(String str) {
+    String output = str.replaceAll('-', '+').replaceAll('_', '/');
+
+    switch (output.length % 4) {
+      case 0:
+        break;
+      case 2:
+        output += '==';
+        break;
+      case 3:
+        output += '=';
+        break;
+      default:
+        throw Exception('Illegal base64url string!"');
+    }
+
+    return utf8.decode(base64Url.decode(output));
   }
 
 
