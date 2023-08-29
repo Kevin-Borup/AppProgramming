@@ -3,6 +3,7 @@ using BulletinBoardApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json;
 
 namespace BulletinBoardApi
 {
@@ -20,7 +21,7 @@ namespace BulletinBoardApi
 
             builder.Services.AddControllers()
                 .AddJsonOptions(
-                    options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+                    options => options.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -31,6 +32,7 @@ namespace BulletinBoardApi
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -38,9 +40,13 @@ namespace BulletinBoardApi
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "https://localhost:32773",
-                        ValidAudience = "https://localhost:32773",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("RandomSecretKey"))
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+
+                        //ValidIssuer = "https://localhost:32773",
+                        //ValidAudience = "https://localhost:32773",
+                        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("RandomSecretKeyThatHasToBeAtLeast128BytesThisIsntEnoughSoMoreTextMustBeAdded"))
                     };
             });
 
@@ -57,6 +63,13 @@ namespace BulletinBoardApi
 
             app.UseAuthorization();
             app.UseAuthentication();
+
+            // Add configuration from appsettings.json
+            builder.Configuration.AddJsonFile("access.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            IConfiguration configuration = app.Configuration;
+            IWebHostEnvironment environment = app.Environment;
 
             app.MapControllers();
 

@@ -1,5 +1,6 @@
 ﻿using BulletinBoardApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,28 +12,56 @@ namespace BulletinBoardApi.Controllers
     [Route("api/Bulletin/[controller]")]
     public class AuthenticationController : Controller
     {
-        public IActionResult Login(Login userLogin)
+        IConfiguration configuration;
+        public AuthenticationController(IConfiguration configuration)
         {
-            if (userLogin == null)
+            this.configuration = configuration;
+        }
+
+
+        [HttpPost("Login")]
+        public IActionResult Login([FromBody] Login userLogin)
+        {
+            IActionResult response = Unauthorized();
+
+            if (userLogin != null)
             {
-                return Unauthorized();
-            } else if (userLogin.Username.Equals("TestName") && userLogin.Password.Equals("TestPass"))
-            {
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("RandomSecretKey"));
-                var creds = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512);
-                var tokenOptions = new JwtSecurityToken(
-                    issuer: "https://localhost:32773",
-                    audience: "https://localhost:32773",
-                    claims: new List<Claim>(),
-                    expires: DateTime.Now.AddMinutes(15),
-                    signingCredentials: creds
-                );
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                return Ok(new AccessToken { Token = tokenString });
-            } else
-            {
-                return Unauthorized();
+                if (userLogin.Username.Equals("TestName") && userLogin.Password.Equals("TestPass"))
+                {
+                    var issuer = configuration["Jwt:Issuer"];
+                    var audience = configuration["Jwt:Audience"];
+                    var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);
+                    var signingCredentials = new SigningCredentials(
+                                            new SymmetricSecurityKey(key),
+                                            SecurityAlgorithms.HmacSha512Signature
+                                        );
+
+                    var expires = DateTime.UtcNow.AddMinutes(15);
+
+                    var subject = new ClaimsIdentity(new[]
+                    {
+                    new Claim(JwtRegisteredClaimNames.Sub, userLogin.Username),
+                    new Claim(JwtRegisteredClaimNames.Name, userLogin.Username),
+                    });
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = subject,
+                        Expires = DateTime.UtcNow.AddMinutes(10),
+                        Issuer = issuer,
+                        Audience = audience,
+                        SigningCredentials = signingCredentials
+                    };
+
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    var jwtToken = tokenHandler.WriteToken(token);
+
+                    return Ok(new AccessToken { Token = jwtToken });
+                }
             }
+
+            return response;
         }
     }
 }

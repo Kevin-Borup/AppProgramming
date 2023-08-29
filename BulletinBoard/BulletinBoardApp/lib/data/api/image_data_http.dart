@@ -19,7 +19,7 @@ class ImageDataHttp implements IApiImages {
 
   late final HttpClientService _httpClientService;
   late final HttpTokenService _httpTokenService;
-  late bool isHttpInitialized = false;
+  late bool _isHttpInitialized = false;
 
   //Mix these urls to create 2 endpoints, 2 categories for board models, and image list.
   final String _baseURL = 'https://10.0.2.2:32773/api/Bulletin';
@@ -27,10 +27,11 @@ class ImageDataHttp implements IApiImages {
   final String _imgEndPoint = '/Img';
 
   Future<void> _initializeHttpService() async {
-    if (isHttpInitialized) return;
+    if (_isHttpInitialized) return;
 
     _httpClientService = await HttpClientService().init();
     _httpTokenService = HttpTokenService(_httpClientService, _baseURL);
+    _isHttpInitialized = true;
   }
 
   //ImgMdls

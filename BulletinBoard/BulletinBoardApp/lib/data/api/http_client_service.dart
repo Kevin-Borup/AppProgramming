@@ -19,26 +19,28 @@ class HttpClientService {
 
   Future<void> _initializeHttpClient() async {
     try {
-      // ByteData data = await rootBundle.load('assets/certificates/localhost+3.p12');
+      ByteData data = await rootBundle.load('assets/certificates/localhost+4.p12');
       // ByteData serverCert = await rootBundle.load('assets/certificates/localhost+3.pem');
-      ByteData pfxData =
-          await rootBundle.load('assets/certificates/localhost.pfx');
+      // ByteData pfxData = await rootBundle.load('assets/certificates/localhost.pfx');
       // ByteData keystore = await rootBundle.load('assets/certificates/localhost+3-key.pem');
-      // List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      List<int> pfxBytes = pfxData.buffer.asUint8List();
+      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      // List<int> pfxBytes = pfxData.buffer.asUint8List();
 
       // var fullChain = Platform.script.resolve('assets/certificates/localhost+3.p12').toFilePath();
       // var fullChain = Platform.script.resolve('C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\BulletinBoard\\BulletinBoardApp\assets\certificates/localhost+3.p12').toFilePath();
 
       SecurityContext sContext = SecurityContext(withTrustedRoots: false);
+      // SecurityContext sContext = SecurityContext(withTrustedRoots: true);
+      // SecurityContext sContext = SecurityContext.defaultContext;
       // sContext.useCertificateChainBytes(clientCert.buffer.asUint8List());
       // sContext.usePrivateKeyBytes(keystore.buffer.asUint8List(), password: "localhostKode1234!");
       // sContext.useCertificateChain(fullChain);
       // sContext.setTrustedCertificatesBytes(data.buffer.asUint8List(), password: "localhostKode1234!");
+      sContext.setTrustedCertificatesBytes(bytes, password: "123");
       // sContext.setTrustedCertificatesBytes(serverCert.buffer.asUint8List(), password: "localhostKode1234!");
-      sContext.useCertificateChainBytes(pfxBytes,
-          password: "localhostKode1234!");
-      sContext.usePrivateKeyBytes(pfxBytes, password: "localhostKode1234!");
+      // sContext.useCertificateChainBytes(pfxBytes,
+      //     password: "localhostKode1234!");
+      // sContext.usePrivateKeyBytes(pfxBytes, password: "localhostKode1234!");
       // sContext.setClientAuthoritiesBytes(data.buffer.asUint8List(), password: "localhostKode1234!");
       _httpClient = HttpClient(context: sContext)
         ..badCertificateCallback = (_certificateCheck);

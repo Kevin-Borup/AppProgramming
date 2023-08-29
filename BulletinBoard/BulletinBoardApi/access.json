@@ -1,0 +1,7 @@
+{
+  "Jwt": {
+    "Issuer": "Issuer",
+    "Audience": "Audience",
+    "Key": "RandomSecretKeyThatHasToBeAtLeast128BytesThisIsntEnoughSoMoreTextMustBeAdded"
+  }
+}

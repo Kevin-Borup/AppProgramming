@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace BulletinBoardApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class BulletinController : ControllerBase

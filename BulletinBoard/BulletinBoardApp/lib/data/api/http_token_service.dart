@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bulletin_board_app/data/api/http_client_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -31,10 +32,11 @@ class HttpTokenService{
 
   Future<String> _GetAccessTokenServer() async {
     final login = <String, dynamic>{};
-    login.addAll({"username": "TestName"});
-    login.addAll({"password": "TestPass"});
+    login.addAll({"Username": "TestName"});
+    login.addAll({"Password": "TestPass"});
 
     var request = await _httpService.httpClient.postUrl(Uri.parse("$_baseUrl/Authentication/Login"));
+    request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
     request.add(utf8.encode(json.encode(login)));
 
     var response = await request.close();
