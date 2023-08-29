@@ -1,21 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj": {}
+    "C:\\ZBC Data-Kommunikation\\H3\\AppProgramming\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj": {}
   },
   "projects": {
-    "C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj": {
+    "C:\\ZBC Data-Kommunikation\\H3\\AppProgramming\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj",
+        "projectUniqueName": "C:\\ZBC Data-Kommunikation\\H3\\AppProgramming\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj",
         "projectName": "BulletinBoardApi",
-        "projectPath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj",
+        "projectPath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgramming\\BulletinBoard\\BulletinBoardApi\\BulletinBoardApi.csproj",
         "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
-        "outputPath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgrammering\\BulletinBoard\\BulletinBoardApi\\obj\\",
+        "outputPath": "C:\\ZBC Data-Kommunikation\\H3\\AppProgramming\\BulletinBoard\\BulletinBoardApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -27,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -46,13 +44,25 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.10, )"
             },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[6.32.2, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.32.2, )"
             },
             "mongodb.driver": {
               "target": "Package",

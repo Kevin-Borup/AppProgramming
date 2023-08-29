@@ -1,10 +1,12 @@
 ﻿using BulletinBoardApi.Models;
 using BulletinBoardApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
 namespace BulletinBoardApi.Controllers
 {
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class BulletinController : ControllerBase

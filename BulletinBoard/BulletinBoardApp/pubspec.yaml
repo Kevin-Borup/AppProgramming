@@ -48,6 +48,7 @@ dependencies:
   image_to_byte: ^1.0.0
   image_gallery_saver: ^2.0.3
   flutter_file_dialog: ^3.0.2
+  flutter_secure_storage: ^9.0.0
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +78,7 @@ flutter:
     - assets/certificates/localhost+3.p12
     - assets/certificates/localhost+3.pem
     - assets/certificates/localhost+3-key.pem
+    - assets/certificates/localhost.pfx
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
