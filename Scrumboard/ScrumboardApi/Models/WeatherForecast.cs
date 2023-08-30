@@ -1,4 +1,4 @@
-namespace ScrumboardApi
+namespace ScrumboardApi.Models
 {
     public class WeatherForecast
     {

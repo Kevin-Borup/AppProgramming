@@ -27,6 +27,8 @@ namespace ScrumboardApi
 
             app.UseAuthorization();
 
+            if (app.Configuration.GetValue() { }
+
 
             app.MapControllers();
 
