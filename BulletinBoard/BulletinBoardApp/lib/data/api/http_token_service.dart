@@ -43,11 +43,6 @@ class HttpTokenService{
     if (response.statusCode == 200) {
       String responseBody = await response.transform(utf8.decoder).join();
       String token = json.decode(responseBody)['fullToken'];
-      // String fullToken = json.decode(respon
-      //       //
-      //       // var token = _parseJwt(fullToken)['key'];
-      //       //
-      //       // await _writeTokenSecureStorage(token);seBody)['FullToken'];
 
       return token;
     }else {

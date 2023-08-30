@@ -40,10 +40,6 @@ namespace BulletinBoardApi
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-
-                        //ValidIssuer = "https://localhost:32773",
-                        //ValidAudience = "https://localhost:32773",
-                        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("RandomSecretKeyThatHasToBeAtLeast128BytesThisIsntEnoughSoMoreTextMustBeAdded"))
                     };
             });
 
