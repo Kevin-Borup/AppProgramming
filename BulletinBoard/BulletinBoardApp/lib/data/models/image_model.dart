@@ -54,7 +54,7 @@ class ImageModel {
     // ObjectId id = json['_id'];
     // var test = .toString();
 
-    var byte = base64.decode(json['Image64'] as String);
+    var byte = base64.decode(json['image64'] as String);
     var image = Image.memory(byte);
 
 
@@ -63,10 +63,10 @@ class ImageModel {
         img: image,
         bytes: byte,
         position:
-            Offset(tryParseToDouble(json['X']), tryParseToDouble(json['Y'])),
+            Offset(tryParseToDouble(json['x']), tryParseToDouble(json['y'])),
         size: Size(
-            tryParseToDouble(json['Width']), tryParseToDouble(json['Height'])),
-        angle: tryParseToDouble(json['Angle']));
+            tryParseToDouble(json['width']), tryParseToDouble(json['height'])),
+        angle: tryParseToDouble(json['angle']));
   }
 
   String toJson() => json.encode(toMap());
@@ -76,12 +76,12 @@ class ImageModel {
 
     //Only include if an ID is found, if not, MongoDB will assume it's a new entry and add it.
     if(dbID != null) dbID ?? result.addAll({'_id': dbID});
-    result.addAll({'Image64': base64.encode(bytes)});
-    result.addAll({'X': position.dx});
-    result.addAll({'Y': position.dy});
-    result.addAll({'Width': size.width});
-    result.addAll({'Height': size.height});
-    result.addAll({'Angle': angle});
+    result.addAll({'image64': base64.encode(bytes)});
+    result.addAll({'x': position.dx});
+    result.addAll({'y': position.dy});
+    result.addAll({'width': size.width});
+    result.addAll({'height': size.height});
+    result.addAll({'angle': angle});
 
     return result;
   }

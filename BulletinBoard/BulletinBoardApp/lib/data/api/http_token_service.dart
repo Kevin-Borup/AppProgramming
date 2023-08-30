@@ -14,7 +14,7 @@ class HttpTokenService{
     encryptedSharedPreferences: true,
   );
   late final _storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
-  final String _storageTokenKey = "AnotherSuperSecretKey";
+  final String _storageTokenKey = "tokenKey";
 
   late final HttpClientService _httpService;
   late final String _baseUrl;
@@ -32,8 +32,8 @@ class HttpTokenService{
 
   Future<String> _GetAccessTokenServer() async {
     final login = <String, dynamic>{};
-    login.addAll({"Username": "TestName"});
-    login.addAll({"Password": "TestPass"});
+    login.addAll({"username": "TestName"});
+    login.addAll({"password": "TestPass"});
 
     var request = await _httpService.httpClient.postUrl(Uri.parse("$_baseUrl/Authentication/Login"));
     request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
@@ -42,13 +42,14 @@ class HttpTokenService{
     var response = await request.close();
     if (response.statusCode == 200) {
       String responseBody = await response.transform(utf8.decoder).join();
+      String token = json.decode(responseBody)['fullToken'];
       // String fullToken = json.decode(respon
       //       //
       //       // var token = _parseJwt(fullToken)['key'];
       //       //
       //       // await _writeTokenSecureStorage(token);seBody)['FullToken'];
 
-      return responseBody;
+      return token;
     }else {
       // If the server did not return a 200 OK response,
       // then throw an exception.

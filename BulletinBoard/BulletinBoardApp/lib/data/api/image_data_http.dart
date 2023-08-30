@@ -174,7 +174,7 @@ class ImageDataHttp implements IApiImages {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       List<Image> imgs = (json.decode(responseBody) as List)
-          .map((json) => Image.memory(base64.decode(json['Image64']))).toList();
+          .map((json) => Image.memory(base64.decode(json['image64']))).toList();
 
       return imgs;
     } else {

@@ -38,14 +38,13 @@ namespace BulletinBoardApi.Controllers
 
                     var expires = DateTime.UtcNow.AddMinutes(15);
 
-                    var subject = new ClaimsIdentity(new[]
-                    {
-                    new Claim(ClaimTypes.Role, "User")
-                    });
+                    //var subject = new ClaimsIdentity(new[]
+                    //{
+                    //new Claim(ClaimTypes.Role, "User")
+                    //});
 
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
-                        Subject = subject,
                         Expires = DateTime.UtcNow.AddMinutes(10),
                         Issuer = issuer,
                         Audience = audience,

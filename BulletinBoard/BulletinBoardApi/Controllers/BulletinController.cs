@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace BulletinBoardApi.Controllers
 {
-    [Authorize(Roles ="User")]
+    
     [ApiController]
     [Route("api/[controller]")]
     public class BulletinController : ControllerBase
@@ -59,6 +59,7 @@ namespace BulletinBoardApi.Controllers
         public async Task<List<ImageDB>> GetImg() => await _bulletinService.GetImgsAsync();
 
         [HttpPost("Img")]
+        //[Authorize(Roles = "User")]
         public async Task<IActionResult> PostImg(ImageDB newImage)
         {
             await _bulletinService.CreateImgAsync(newImage);
