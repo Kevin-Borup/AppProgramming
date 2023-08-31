@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:scrumboard_app/interfaces/IApiHttp.dart';
 import 'package:scrumboard_app/models/card_model.dart';
 
 import 'http_client_service.dart';
 import 'http_token_service.dart';
 
-class HttpDataApi {
+class HttpDataApi implements IApiHttp {
   // IOS to the PC: http://localhost:port or http://127.0.0.1:port
   // Android to the PC: http://10.0.2.2:port
 
@@ -26,11 +27,12 @@ class HttpDataApi {
     _isHttpInitialized = true;
   }
 
+  @override
   Future<List<CardModel>> getAllCardModels() async {
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.getUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
-    request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
+    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
     request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
 
     HttpClientResponse response = await request.close();
@@ -49,4 +51,75 @@ class HttpDataApi {
     }
   }
 
+  @override
+  Future<CardModel> postCardModel(CardModel cardMdl) async {
+    await _initializeHttpService();
+    String token = await _httpTokenService.GetAccessToken();
+    final request = await _httpClientService.httpClient.postUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
+    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
+    request.add(utf8.encode(cardMdl.toJson()));
+
+    HttpClientResponse response = await request.close();
+    if (response.statusCode == 201) {
+      // If the server did return a 201 ADDED response.
+      //Get updated CardModel with an ID
+      String responseBody = await response.transform(utf8.decoder).join();
+      CardModel updatedCardMdl = CardModel.fromJson(json.decode(responseBody));
+
+      return updatedCardMdl;
+    } else {
+      throw Exception('[ERROR] Failed to get - response code: ${response.statusCode}');
+    }
+  }
+
+  @override
+  Future<void> updateCardModel(CardModel cardMdl) async {
+    await _initializeHttpService();
+    String token = await _httpTokenService.GetAccessToken();
+    final request = await _httpClientService.httpClient.putUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
+    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
+    request.add(utf8.encode(cardMdl.toJson()));
+
+    HttpClientResponse response = await request.close();
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response.
+    } else {
+      throw Exception('[ERROR] Failed to get - response code: ${response.statusCode}');
+    }
+  }
+
+  @override
+  Future<void> deleteCardModel(CardModel cardMdl) async {
+    await _initializeHttpService();
+    String token = await _httpTokenService.GetAccessToken();
+    final request = await _httpClientService.httpClient.deleteUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
+    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
+    request.add(utf8.encode(cardMdl.toJson()));
+
+    HttpClientResponse response = await request.close();
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response.
+    } else {
+      throw Exception('[ERROR] Failed to get - response code: ${response.statusCode}');
+    }
+  }
+
+  @override
+  Future<void> deleteAllCardModels() async {
+    await _initializeHttpService();
+    String token = await _httpTokenService.GetAccessToken();
+    final request = await _httpClientService.httpClient.deleteUrl(Uri.parse("$_baseURL${_cardMdlEndPoint}All"));
+    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
+    request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
+
+    HttpClientResponse response = await request.close();
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response.
+    } else {
+      throw Exception('[ERROR] Failed to get - response code: ${response.statusCode}');
+    }
+  }
 }
