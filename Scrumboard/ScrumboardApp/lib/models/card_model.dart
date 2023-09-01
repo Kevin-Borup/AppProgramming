@@ -5,9 +5,9 @@ import 'package:appflowy_board/appflowy_board.dart';
 class CardModel extends AppFlowyGroupItem {
   late String? _id = null;
   late String columnId;
-  final String title;
-  final String text;
-  final String date;
+  late String title;
+  late String text;
+  late String date;
 
   @override
   String get id => _id ?? title+date+text; //temp id for AppFlowy

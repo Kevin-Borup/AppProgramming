@@ -6,7 +6,11 @@ import 'package:scrumboard_app/events/card_events.dart';
 import 'package:scrumboard_app/models/card_model.dart';
 
 class TextCardFormWidget extends StatefulWidget {
-  const TextCardFormWidget({super.key});
+  const TextCardFormWidget(
+      {super.key, required this.columnId, this.card = null});
+
+  final String columnId;
+  final CardModel? card;
 
   @override
   State<TextCardFormWidget> createState() => _TextCardFormWidgetState();
@@ -22,61 +26,95 @@ class _TextCardFormWidgetState extends State<TextCardFormWidget> {
   Widget build(BuildContext context) {
     final CardBloc cardBloc = BlocProvider.of<CardBloc>(context);
 
-    return Scaffold(
-      body: Form(
+    if (widget.card != null) {
+      CardModel cardToEdit = widget.card!;
+      titleController.text = cardToEdit.title;
+      textController.text = cardToEdit.text;
+      dateController.text = cardToEdit.date;
+    }
+
+    return AlertDialog(
+      title: const Text("Create card"),
+      scrollable: true,
+      content: Form(
         key: _formKey,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: titleController,
+              validator: (text) {
+                if (text == null || text.isEmpty) {
+                  return "A title is required";
+                }
+                return null;
+              },
               decoration: const InputDecoration(
                   labelText: "Enter title", hintText: "Type title here..."),
             ),
             TextFormField(
+              expands: false,
+              maxLines: 3,
               controller: textController,
+              validator: (text) {
+                if (text == null || text.isEmpty) {
+                  return "text is required";
+                }
+                return null;
+              },
               decoration: const InputDecoration(
                   labelText: "Enter text", hintText: "Type text here..."),
             ),
-            TextFormField(
-              controller: dateController,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.calendar_today),
-                labelText: "Enter date",
-                hintText: "Input date here",
-              ),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(), //get today's date
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101));
+            TextField(
+                controller: dateController,
+                decoration: const InputDecoration(
+                    icon: Icon(Icons.calendar_today), labelText: "Enter Date"),
+                readOnly: true,
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(), //get today's date
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2101));
 
-                if (pickedDate != null) {
-                  dateController.text =
-                      DateFormat('h:mm a - MMM d, y').format(pickedDate);
-                }
-              },
-            ),
-            Row(
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Cancel")),
-                ElevatedButton(
-                    onPressed: () {
-                      cardBloc.add(PostCardEvent(CardModel(
-                          title: titleController.text,
-                          text: textController.text,
-                          date: dateController.text)));
-                    },
-                    child: const Text("Add"))
-              ],
-            )
+                  if (pickedDate != null) {
+                    dateController.text =
+                        DateFormat('h:mm a - MMM d, y').format(pickedDate);
+                  }
+                })
           ],
         ),
       ),
+      actions: [
+        ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Cancel")),
+        ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (widget.card == null) {
+                  var newCard = CardModel(
+                      title: titleController.text,
+                      text: textController.text,
+                      date: dateController.text);
+
+                  newCard.updateColumnId(widget.columnId);
+                  cardBloc.add(PostCardEvent(newCard));
+                  Navigator.pop(context);
+                } else {
+                  var cardToUpdate = widget.card!;
+
+                  cardToUpdate.title = titleController.text;
+                  cardToUpdate.text = textController.text;
+                  cardToUpdate.text = dateController.text;
+                  cardBloc.add(UpdateCardEvent(cardToUpdate));
+                }
+              }
+            },
+            child: const Text("Add"))
+      ],
     );
   }
 }

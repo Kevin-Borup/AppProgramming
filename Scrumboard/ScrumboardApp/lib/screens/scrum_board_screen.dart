@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:appflowy_board/appflowy_board.dart';
-import 'package:event/event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,8 +7,7 @@ import 'package:scrumboard_app/data/blocs/states/card_states.dart';
 import 'package:scrumboard_app/models/card_model.dart';
 import 'package:scrumboard_app/widgets/text_card_form_widget.dart';
 import 'package:scrumboard_app/widgets/text_card_widget.dart';
-
-import '../events/board_events.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScrumBoardScreen extends StatefulWidget {
   const ScrumBoardScreen({super.key});
@@ -21,10 +17,12 @@ class ScrumBoardScreen extends StatefulWidget {
 }
 
 class _ScrumBoardScreenState extends State<ScrumBoardScreen> {
+  late final SharedPreferences prefs;
+
   late final AppFlowyBoardController boardController;
   late AppFlowyBoardScrollController boardScrollController;
-  final AppFlowyBoardConfig boardConfig = AppFlowyBoardConfig(
-    groupBackgroundColor: Colors.cyan.shade300,
+  final AppFlowyBoardConfig boardConfig = const AppFlowyBoardConfig(
+    groupBackgroundColor: Color.fromRGBO(242, 242, 242, 0.8),
     stretchGroupHeight: true,
   );
 
@@ -61,8 +59,7 @@ class _ScrumBoardScreenState extends State<ScrumBoardScreen> {
     );
 
     if (result is bool) {
-      bool answer = result as bool;
-      if (!answer) {
+      if (!result) {
         //since controller.onMoveGroupItemToGroup is protected and not working as intended, this had to be configured
         // The note in question is found by selecting the item on the index.
         var note = toGroup.items[toIndex];
@@ -136,61 +133,108 @@ class _ScrumBoardScreenState extends State<ScrumBoardScreen> {
   @override
   Widget build(BuildContext context) {
     final CardBloc cardBloc = BlocProvider.of<CardBloc>(context);
-    
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-      child: BlocBuilder<CardBloc, CardState>(
-        builder: (blocContext, CardState state) {
-          state.cards.map((CardModel card) =>
-              boardController.addGroupItem(card.columnId, card));
+    late double columnWidth = (MediaQuery.of(context).size.width / 1.3);
+    if (columnWidth > 400) columnWidth = 400;
 
-          return AppFlowyBoard(
-              controller: boardController,
-              cardBuilder: (context, group, groupItem) {
-                final card = groupItem as CardModel;
-                return AppFlowyGroupCard(
-                  key: ValueKey(groupItem.id),
-                  child: TextCardWidget(item: card),
-                );
-              },
-              boardScrollController: boardScrollController,
-              footerBuilder: (context, columnData) {
-                return AppFlowyGroupFooter(
-                  icon: const Icon(Icons.add, size: 20),
-                  title: const Text('New'),
-                  height: 50,
-                  margin: boardConfig.groupItemPadding,
-                  onAddButtonClick: () {
-                    showDialog(
-                        context: context,
-                        builder: (dialogContext) {
-                          return BlocProvider.value(
-                            value: cardBloc,
-                            child: const TextCardFormWidget(),
-                          );
-                        });
+    return ShaderMask(
+      shaderCallback: (Rect rect) {
+        return const LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [
+            Colors.purple,
+            Colors.transparent,
+            Colors.transparent,
+            Colors.purple
+          ],
+          stops: [
+            0.0,
+            0.1,
+            0.9,
+            1.0
+          ], // 10% purple, 80% transparent, 10% purple
+        ).createShader(rect);
+      },
+      blendMode: BlendMode.dstOut,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+        child: BlocBuilder<CardBloc, CardState>(
+          builder: (blocContext, CardState state) {
+            state.cards.map((CardModel card) =>
+                boardController.addGroupItem(card.columnId, card));
 
-                    boardScrollController.scrollToBottom(columnData.id);
-                  },
-                );
-              },
-              headerBuilder: (context, columnData) {
-                return AppFlowyGroupHeader(
-                  title: Expanded(
-                    child: Text(
-                      columnData.headerData.groupName,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20),
+            return AppFlowyBoard(
+                controller: boardController,
+                //Header
+                headerBuilder: (context, columnData) {
+                  return AppFlowyGroupHeader(
+                    title: Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            columnData.headerData.groupName,textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 25),
+
+                          ),
+                          Divider(height: 2, color: Colors.grey.withOpacity(0.9),)
+                        ],
+                      )
                     ),
-                  ),
-                  height: 50,
-                  margin: boardConfig.groupItemPadding,
-                );
-              },
-              groupConstraints: BoxConstraints.tightFor(
-                  width: MediaQuery.of(context).size.width - 40),
-              config: boardConfig);
-        },
+                    height: 50,
+                    margin: boardConfig.groupItemPadding,
+                  );
+                },
+                //Body
+                cardBuilder: (context, group, groupItem) {
+                  final card = groupItem as CardModel;
+                  return BlocProvider.value(
+                    value: cardBloc,
+                    child: AppFlowyGroupCard(
+                      key: ValueKey(groupItem.id),
+                      child: TextCardWidget(card: card),
+                    ),
+                  );
+                },
+                //Footer
+                footerBuilder: (context, columnData) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 25),
+                    child: AppFlowyGroupFooter(
+                      icon: const Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
+                      title: const Text(
+                        'New',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      height: 50,
+                      margin: boardConfig.groupItemPadding,
+                      onAddButtonClick: () {
+                        showDialog(
+                            context: context,
+                            builder: (dialogContext) {
+                              return BlocProvider.value(
+                                value: cardBloc,
+                                child: TextCardFormWidget(
+                                  columnId: columnData.id,
+                                ),
+                              );
+                            });
+
+                        boardScrollController.scrollToBottom(columnData.id);
+                      },
+                    ),
+                  );
+                },
+                boardScrollController: boardScrollController,
+                groupConstraints: BoxConstraints.tightFor(
+                    width: columnWidth),
+                config: boardConfig);
+          },
+        ),
       ),
     );
   }
