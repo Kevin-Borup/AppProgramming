@@ -110,6 +110,7 @@ class _TextCardFormWidgetState extends State<TextCardFormWidget> {
                   cardToUpdate.text = textController.text;
                   cardToUpdate.text = dateController.text;
                   cardBloc.add(UpdateCardEvent(cardToUpdate));
+                  Navigator.pop(context);
                 }
               }
             },

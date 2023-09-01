@@ -19,7 +19,10 @@ class CardModel extends AppFlowyGroupItem {
   }
 
   factory CardModel.fromJson(Map<String, dynamic> json){
-    return CardModel(title: json['title'], text: json['text'], date: json['date']);
+    var newCard = CardModel(title: json['title'], text: json['text'], date: json['date']);
+    newCard._id = json['id'];
+    newCard.columnId = json['columnId'];
+    return newCard;
   }
 
   String toJson() => json.encode((toMap()));
@@ -28,6 +31,7 @@ class CardModel extends AppFlowyGroupItem {
     final mapped = <String, dynamic>{};
 
     if (_id != null) mapped.addAll({'_id': _id});
+    mapped.addAll({'columnId': columnId});
     mapped.addAll({'title': title});
     mapped.addAll({'text': text});
     mapped.addAll({'date': date});

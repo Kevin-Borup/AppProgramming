@@ -1,4 +1,4 @@
-import 'dart:convert';
+  import 'dart:convert';
 import 'dart:io';
 
 import 'package:scrumboard_app/interfaces/IApiHttp.dart';
@@ -16,7 +16,7 @@ class HttpDataApi implements IApiHttp {
   late bool _isHttpInitialized = false;
 
   //Mix these urls to create 2 endpoints, 2 categories for board models, and image list.
-  final String _baseURL = 'https://10.0.2.2:32773/api/Scrumboard';
+  final String _baseURL = 'https://10.0.2.2:32775/api/Scrumboard';
   final String _cardMdlEndPoint = '/CardMdl';
 
   Future<void> _initializeHttpService() async {
@@ -29,6 +29,9 @@ class HttpDataApi implements IApiHttp {
 
   @override
   Future<List<CardModel>> getAllCardModels() async {
+    var test1 = HttpHeaders.contentTypeHeader;
+    var test2 = ContentType.json;
+
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.getUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
@@ -53,10 +56,13 @@ class HttpDataApi implements IApiHttp {
 
   @override
   Future<CardModel> postCardModel(CardModel cardMdl) async {
+    var test1 = HttpHeaders.contentTypeHeader;
+    var test2 = ContentType.json;
+
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.postUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
-    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
+    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json.value);
     request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
     request.add(utf8.encode(cardMdl.toJson()));
 

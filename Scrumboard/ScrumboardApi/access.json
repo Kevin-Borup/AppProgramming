@@ -1,7 +1,7 @@
 {
   "Jwt": {
-    "Issuer": "https://localhost:32773",
-    "Audience": "https://localhost:32773",
+    "Issuer": "https://localhost:32775",
+    "Audience": "https://localhost:32775",
     "Key": "RandomSecretKeyThatHasToBeAtLeast128BytesThisIsntEnoughSoMoreTextMustBeAdded"
   }
 }
