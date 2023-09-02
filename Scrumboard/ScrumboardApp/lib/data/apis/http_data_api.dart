@@ -1,6 +1,7 @@
   import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:scrumboard_app/interfaces/IApiHttp.dart';
 import 'package:scrumboard_app/models/card_model.dart';
 
@@ -29,13 +30,10 @@ class HttpDataApi implements IApiHttp {
 
   @override
   Future<List<CardModel>> getAllCardModels() async {
-    var test1 = HttpHeaders.contentTypeHeader;
-    var test2 = ContentType.json;
-
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.getUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
-    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
+    request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
     request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
 
     HttpClientResponse response = await request.close();
@@ -50,19 +48,20 @@ class HttpDataApi implements IApiHttp {
       return cardMdls;
 
     } else {
-      throw Exception('[ERROR] Failed to get - response code: ${response.statusCode}');
+      String error = '[ERROR] Failed to get - response code: ${response.statusCode}';
+      if (kDebugMode) {
+        print(error);
+      }
+      throw Exception(error);
     }
   }
 
   @override
   Future<CardModel> postCardModel(CardModel cardMdl) async {
-    var test1 = HttpHeaders.contentTypeHeader;
-    var test2 = ContentType.json;
-
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.postUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
-    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json.value);
+    request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
     request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
     request.add(utf8.encode(cardMdl.toJson()));
 
@@ -75,7 +74,11 @@ class HttpDataApi implements IApiHttp {
 
       return updatedCardMdl;
     } else {
-      throw Exception('[ERROR] Failed to get - response code: ${response.statusCode}');
+      String error = '[ERROR] Failed to post - response code: ${response.statusCode}';
+      if (kDebugMode) {
+        print(error);
+      }
+      throw Exception(error);
     }
   }
 
@@ -84,7 +87,7 @@ class HttpDataApi implements IApiHttp {
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.putUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
-    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
+    request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
     request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
     request.add(utf8.encode(cardMdl.toJson()));
 
@@ -92,7 +95,11 @@ class HttpDataApi implements IApiHttp {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response.
     } else {
-      throw Exception('[ERROR] Failed to get - response code: ${response.statusCode}');
+      String error = '[ERROR] Failed to update - response code: ${response.statusCode}';
+      if (kDebugMode) {
+        print(error);
+      }
+      throw Exception(error);
     }
   }
 
@@ -101,7 +108,7 @@ class HttpDataApi implements IApiHttp {
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.deleteUrl(Uri.parse(_baseURL + _cardMdlEndPoint));
-    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
+    request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
     request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
     request.add(utf8.encode(cardMdl.toJson()));
 
@@ -109,7 +116,11 @@ class HttpDataApi implements IApiHttp {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response.
     } else {
-      throw Exception('[ERROR] Failed to get - response code: ${response.statusCode}');
+      String error = '[ERROR] Failed to delete - response code: ${response.statusCode}';
+      if (kDebugMode) {
+        print(error);
+      }
+      throw Exception(error);
     }
   }
 
@@ -118,14 +129,18 @@ class HttpDataApi implements IApiHttp {
     await _initializeHttpService();
     String token = await _httpTokenService.GetAccessToken();
     final request = await _httpClientService.httpClient.deleteUrl(Uri.parse("$_baseURL${_cardMdlEndPoint}All"));
-    request.headers.add(HttpHeaders.contentTypeHeader, ContentType.json);
+    request.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
     request.headers.add(HttpHeaders.authorizationHeader, "Bearer $token");
 
     HttpClientResponse response = await request.close();
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response.
     } else {
-      throw Exception('[ERROR] Failed to get - response code: ${response.statusCode}');
+      String error = '[ERROR] Failed to deleteAll - response code: ${response.statusCode}';
+      if (kDebugMode) {
+        print(error);
+      }
+      throw Exception(error);
     }
   }
 }

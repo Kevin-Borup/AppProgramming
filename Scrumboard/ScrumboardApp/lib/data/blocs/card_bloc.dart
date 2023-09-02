@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localstore/localstore.dart';
@@ -13,9 +12,9 @@ class CardBloc extends Bloc<CardEvent, CardState> {
   CardBloc() : super(CardState(state: CardStates.initial)) {
     on<GetAllCardsEvent>(_getAllCards);
     on<DeleteAllCardsEvent>(_deleteAllCards);
-    on<PostCardEvent>(_postCard);
-    on<UpdateCardEvent>(_updateCard);
-    on<DeleteCardEvent>(_deleteCard);
+    on<PostCardEvent>(_postCardAndGetAll);
+    on<UpdateCardEvent>(_updateCardAndGetAll);
+    on<DeleteCardEvent>(_deleteCardAndGetAll);
   }
 
   final _api = locator<IApiHttp>(); //Using the locator to get the Api interface
@@ -35,11 +34,13 @@ class CardBloc extends Bloc<CardEvent, CardState> {
     } on Exception {
       try {
         var dbCards = await db.collection(colCards).get();
-        if (dbCards != null){
-          cards = (dbCards as List).map((i) => CardModel.fromJson(i)).toList();
+        if(dbCards != null){
+          cards = [];
+          dbCards.entries.forEach((element) { cards!.add(CardModel.fromJson(element.value)); });
         }
       } on Exception {
         emit(CardState(state: CardStates.error));
+        return;
       }
     }
 
@@ -54,38 +55,89 @@ class CardBloc extends Bloc<CardEvent, CardState> {
       await db.collection(colCards).delete();
     } on Exception {
       emit(CardState(state: CardStates.error));
+      return;
     }
 
-    emit(CardState(state: CardStates.complete));
+    emit(CardState(state: CardStates.complete, cards: []));
   }
 
-  void _postCard(PostCardEvent event, Emitter<CardState> emit) async {
-    emit(CardState(state: CardStates.deleting));
+  void _postCardAndGetAll(PostCardEvent event, Emitter<CardState> emit) async {
+    emit(CardState(state: CardStates.uploading));
 
     try {
       await _api.postCardModel(event.cardMdl);
       await _addToOrUpdateLocalDB(event.cardMdl);
     } on Exception {
-      emit(CardState(state: CardStates.error));
+      try {
+        await _addToOrUpdateLocalDB(event.cardMdl);
+      } on Exception {
+        emit(CardState(state: CardStates.error));
+        return;
+      }
     }
 
-    _getAllCards(GetAllCardsEvent(), emit);
+    List<CardModel>? cards;
+    try {
+      cards = await _api.getAllCardModels();
+      await db.collection(colCards).delete();
+      for (var card in cards) {
+        _addToOrUpdateLocalDB(card);
+      }
+    } on Exception {
+      try {
+        var dbCards = await db.collection(colCards).get();
+        if(dbCards != null){
+          cards = [];
+          dbCards.entries.forEach((element) { cards!.add(CardModel.fromJson(element.value)); });
+        }
+      } on Exception {
+        emit(CardState(state: CardStates.error));
+        return;
+      }
+    }
+
+    emit(CardState(state: CardStates.complete, cards: cards));
   }
 
-  void _updateCard(UpdateCardEvent event, Emitter<CardState> emit) async {
-    emit(CardState(state: CardStates.deleting));
+  void _updateCardAndGetAll(UpdateCardEvent event, Emitter<CardState> emit) async {
+    emit(CardState(state: CardStates.uploading));
 
     try {
       await _api.updateCardModel(event.cardMdl);
       await _addToOrUpdateLocalDB(event.cardMdl);
     } on Exception {
-      emit(CardState(state: CardStates.error));
+      try {
+        await _addToOrUpdateLocalDB(event.cardMdl);
+      } on Exception {
+        emit(CardState(state: CardStates.error));
+        return;
+      }
     }
 
-    _getAllCards(GetAllCardsEvent(), emit);
+    List<CardModel>? cards;
+    try {
+      cards = await _api.getAllCardModels();
+      await db.collection(colCards).delete();
+      for (var card in cards) {
+        _addToOrUpdateLocalDB(card);
+      }
+    } on Exception {
+      try {
+        var dbCards = await db.collection(colCards).get();
+        if(dbCards != null){
+          cards = [];
+          dbCards.entries.forEach((element) { cards!.add(CardModel.fromJson(element.value)); });
+        }
+      } on Exception {
+        emit(CardState(state: CardStates.error));
+        return;
+      }
+    }
+
+    emit(CardState(state: CardStates.complete, cards: cards));
   }
 
-  void _deleteCard(DeleteCardEvent event, Emitter<CardState> emit) async {
+  void _deleteCardAndGetAll(DeleteCardEvent event, Emitter<CardState> emit) async {
     emit(CardState(state: CardStates.deleting));
 
     try {
@@ -94,9 +146,30 @@ class CardBloc extends Bloc<CardEvent, CardState> {
       await db.collection(colCards).doc(id).delete();
     } on Exception {
       emit(CardState(state: CardStates.error));
+      return;
     }
 
-    _getAllCards(GetAllCardsEvent(), emit);
+    List<CardModel>? cards;
+    try {
+      cards = await _api.getAllCardModels();
+      await db.collection(colCards).delete();
+      for (var card in cards) {
+        _addToOrUpdateLocalDB(card);
+      }
+    } on Exception {
+      try {
+        var dbCards = await db.collection(colCards).get();
+        if(dbCards != null){
+          cards = [];
+          dbCards.entries.forEach((element) { cards!.add(CardModel.fromJson(element.value)); });
+        }
+      } on Exception {
+        emit(CardState(state: CardStates.error));
+        return;
+      }
+    }
+
+    emit(CardState(state: CardStates.complete, cards: cards));
   }
 
   Future<void> _addToOrUpdateLocalDB(CardModel cardMdl) async {

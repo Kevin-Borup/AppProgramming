@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'http_client_service.dart';
@@ -25,13 +26,13 @@ class HttpTokenService{
     String token = await _readTokenSecureStorage();
 
     if (token == ""){
-      token = await _GetAccessTokenServer();
+      token = await _getAccessTokenServer();
     }
 
     return token;
   }
 
-  Future<String> _GetAccessTokenServer() async {
+  Future<String> _getAccessTokenServer() async {
     final login = <String, dynamic>{};
     login.addAll({"username": "TestName"});
     login.addAll({"password": "TestPass"});
@@ -51,8 +52,11 @@ class HttpTokenService{
     }else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception(
-          '[ERROR] Failed to get Token - response code: ${response.statusCode}');
+      String error = '[ERROR] Failed to get Token - response code: ${response.statusCode}';
+      if (kDebugMode) {
+        print(error);
+      }
+      throw Exception(error);
     }
   }
 

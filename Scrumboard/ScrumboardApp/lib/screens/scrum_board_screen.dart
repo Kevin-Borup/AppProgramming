@@ -99,7 +99,9 @@ class _ScrumBoardScreenState extends State<ScrumBoardScreen> {
 
     final groupBckLg = AppFlowyGroupData(
       id: "0Backlog",
-      name: "Backlog",
+      name: "Backlog", items: [
+        CardModel(title: "title", text: "text", date: "date")
+    ]
     );
 
     final groupToDo = AppFlowyGroupData(
