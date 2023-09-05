@@ -98,11 +98,9 @@ class _ScrumBoardScreenState extends State<ScrumBoardScreen> {
     boardScrollController = AppFlowyBoardScrollController();
 
     final groupBckLg = AppFlowyGroupData(
-      id: "0Backlog",
-      name: "Backlog", items: [
-        CardModel(title: "title", text: "text", date: "date")
-    ]
-    );
+        id: "0Backlog",
+        name: "Backlog",
+        items: [CardModel(title: "title", text: "text", date: "date")]);
 
     final groupToDo = AppFlowyGroupData(
       id: "1ToDo",
@@ -172,30 +170,31 @@ class _ScrumBoardScreenState extends State<ScrumBoardScreen> {
                   return AppFlowyGroupHeader(
                     title: Expanded(
                         child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            columnData.headerData.groupName,textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 25),
-
-                          ),
-                          Divider(height: 2, color: Colors.grey.withOpacity(0.9),)
-                        ],
-                      )
-                    ),
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          columnData.headerData.groupName,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25),
+                        ),
+                        Divider(
+                          height: 2,
+                          color: Colors.grey.withOpacity(0.9),
+                        )
+                      ],
+                    )),
                     height: 50,
                     margin: boardConfig.groupItemPadding,
                   );
                 },
                 //Body
                 cardBuilder: (context, group, groupItem) {
-                  final card = groupItem as CardModel;
-                  return BlocProvider.value(
-                    value: cardBloc,
-                    child: AppFlowyGroupCard(
-                      key: ValueKey(groupItem.id),
-                      child: TextCardWidget(card: card),
+                  return AppFlowyGroupCard(
+                    key: ValueKey(groupItem.id),
+                    child: BlocProvider.value(
+                      value: cardBloc,
+                      child: TextCardWidget(card: groupItem as CardModel),
                     ),
                   );
                 },
@@ -232,8 +231,7 @@ class _ScrumBoardScreenState extends State<ScrumBoardScreen> {
                   );
                 },
                 boardScrollController: boardScrollController,
-                groupConstraints: BoxConstraints.tightFor(
-                    width: columnWidth),
+                groupConstraints: BoxConstraints.tightFor(width: columnWidth),
                 config: boardConfig);
           },
         ),

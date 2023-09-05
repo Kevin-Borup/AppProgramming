@@ -1,16 +1,19 @@
 import 'dart:convert';
 
 import 'package:appflowy_board/appflowy_board.dart';
+import 'package:uuid/uuid.dart';
 
 class CardModel extends AppFlowyGroupItem {
   late String? _id = null;
+  final String tempId = const Uuid().v4();
   late String columnId;
   late String title;
   late String text;
   late String date;
+  late String assignedName = "";
 
   @override
-  String get id => _id ?? title+date+text; //temp id for AppFlowy
+  String get id => _id ?? tempId; //temp id for AppFlowy
 
   CardModel({required this.title, required this.text, required this.date});
 

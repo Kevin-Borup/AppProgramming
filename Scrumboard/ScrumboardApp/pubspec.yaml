@@ -43,6 +43,7 @@ dependencies:
   event: ^2.1.2
   intl: ^0.18.1
   shared_preferences: ^2.2.1
+  uuid: ^4.0.0
 
 dev_dependencies:
   flutter_test:
